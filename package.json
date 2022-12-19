@@ -1,0 +1,49 @@
+{
+  "name": "modules-dev",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "create": "node lib/init-module.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@craco/craco": "^7.0.0",
+    "@kne/apply-template": "^0.1.1",
+    "@kne/camel-case": "^0.1.1",
+    "@kne/example-driver": "^0.1.6",
+    "@kne/md-doc": "^0.1.7",
+    "@kne/remote-loader": "^0.1.13",
+    "antd": "^5.0.3",
+    "chokidar": "^3.5.3",
+    "classnames": "^2.3.2",
+    "craco-module-federation": "^1.1.0",
+    "fs-extra": "^11.1.0",
+    "http-proxy-middleware": "^2.0.6",
+    "inquirer": "^8.2.5",
+    "lodash": "^4.17.21",
+    "node-sass": "^8.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.4",
+    "react-scripts": "^5.0.1",
+    "webpack-virtual-modules": "^0.4.6"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

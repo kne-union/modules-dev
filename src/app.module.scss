@@ -1,0 +1,32 @@
+.title {
+  font-size: 30px;
+}
+
+.info {
+  background: rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  border-radius: 4px;
+
+  pre {
+    margin: 0;
+  }
+}
+
+.example {
+  :global(.example-driver-switch):hover {
+    color: #5CB8B2;
+  }
+}
+
+.part-title{
+  margin-top: 30px;
+}
+
+:global {
+  .ant-picker-dropdown-range {
+    padding: 0;
+    .ant-picker-range-arrow {
+      display: none;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -10,6 +10,12 @@
   "bin": {
     "modules-dev-create": "lib/init-module.js"
   },
+  "files": [
+    "dist",
+    "lib",
+    "template",
+    "index.js"
+  ],
   "scripts": {
     "build:lib": "microbundle --no-compress --format modern,cjs --jsx React.createElement --jsxFragment React.Fragment"
   },

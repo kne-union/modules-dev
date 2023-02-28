@@ -1,8 +1,8 @@
-import {useEffect} from "react";
-import readme from "readme";
+import '@kne/example-driver/dist/index.css';
+import React,{useEffect} from "react";
 import get from "lodash/get";
 import {Space} from "antd";
-import style from "./app.module.scss";
+import style from "./example.module.scss";
 import classnames from "classnames";
 import ExampleDriver from "@kne/example-driver";
 import {HashRouter, useParams} from "react-router-dom";
@@ -16,7 +16,7 @@ const ExampleDriverContext = ({children}) => {
 
 const Example = createWithRemoteLoader({
     modules: ["Layout@Page", "Layout@Menu"]
-})(({remoteModules}) => {
+})(({remoteModules, readme}) => {
     const [Page, Menu] = remoteModules;
     const {id} = useParams();
     const current = id || Object.keys(readme)[0];
@@ -35,10 +35,10 @@ const Example = createWithRemoteLoader({
     }, [exampleStyle]);
     return <Page title={data.name} menu={<Menu selectedKeys={[current]} items={Object.keys(readme).map((name) => {
         return {
-            label: name, key: name, path: '/modules/' + name
+            label: name, key: name, path: '/modules-dev/' + name
         };
     })}/>}>
-        <Space className="container" direction="vertical">
+        <Space className={classnames('container', style['main'])} direction="vertical">
             <h2 className={style['part-title']}>概述</h2>
             <div className="mark-down-html" dangerouslySetInnerHTML={{__html: data.summary}}/>
             <h2 className={style['part-title']}>代码示例</h2>

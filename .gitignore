@@ -128,3 +128,4 @@ dist
 .idea
 build
 pnpm-lock.yaml
+package-lock.json

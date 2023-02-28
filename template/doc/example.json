@@ -8,7 +8,7 @@
       "scope": [
         {
           "name": "_<%=name%>",
-          "packageName": "@ui-components/<%=name%>"
+          "packageName": "<%=moduleAliasName%>/<%=name%>"
         }
       ]
     }

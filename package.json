@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -24,7 +24,6 @@
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
-    "@craco/craco": "^7.0.0",
     "@kne/apply-template": "^0.1.1",
     "@kne/camel-case": "^0.1.1",
     "@kne/craco-module-federation": "^1.1.1",
@@ -42,6 +41,7 @@
     "webpack-virtual-modules": "^0.5.0"
   },
   "peerDependencies": {
+    "@craco/craco": ">=7.0.0",
     "antd": ">=5",
     "react": ">=18",
     "react-router-dom": ">=6.4",
@@ -60,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "@kne/microbundle": "^0.15.4"
   }
 }

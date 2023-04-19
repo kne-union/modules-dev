@@ -17,7 +17,7 @@ const ExampleDriverContext = ({children}) => {
 
 const ExamplePage = createWithRemoteLoader({
     modules: ["Layout@Page", "Layout@Menu"]
-})(({remoteModules, data, current, items}) => {
+})(({remoteModules, data, current, items, pageProps = {}}) => {
     const [Page, Menu] = remoteModules;
 
     const exampleStyle = get(data, 'example.style');
@@ -32,7 +32,7 @@ const ExamplePage = createWithRemoteLoader({
             document.head.removeChild(dom);
         };
     }, [exampleStyle]);
-    return <Page title={data.name} menu={<Menu currentKey={current} items={items}/>}>
+    return <Page {...pageProps} title={data.name} menu={<Menu currentKey={current} items={items}/>}>
         <Space className={classnames('container', style['main'])} direction="vertical">
             <h2 className={style['part-title']}>概述</h2>
             <Highlight className="mark-down-html" html={data.summary}/>

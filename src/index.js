@@ -6,6 +6,7 @@ import {Result, FloatButton} from 'antd';
 import {ToolOutlined} from '@ant-design/icons';
 import Example from './Example';
 import readme from "readme";
+import ExamplePage from './ExamplePage';
 
 const ModulesIsEmpty = ({readme}) => {
     const location = useLocation();
@@ -33,11 +34,13 @@ const createEntry = (WrappedComponents) => createWithRemoteLoader({
                 <Route path=":id" element={<Global><Layout><Example readme={readme}/></Layout></Global>}/>
             </Route>
             <Route path='*'
-                   element={<><WrappedComponents {...props}/><FloatButton icon={<ToolOutlined />} onClick={() => {
+                   element={<><WrappedComponents {...props}/><FloatButton icon={<ToolOutlined/>} onClick={() => {
                        window.location.href = '/modules-dev';
                    }}/></>}/>
         </Routes>
     </BrowserRouter>;
 });
+
+createEntry.ExamplePage = ExamplePage;
 
 export default createEntry;

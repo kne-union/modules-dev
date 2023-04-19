@@ -32,7 +32,7 @@ const ExamplePage = createWithRemoteLoader({
             document.head.removeChild(dom);
         };
     }, [exampleStyle]);
-    return <Page title={data.name} menu={<Menu selectedKeys={[current]} items={items}/>}>
+    return <Page title={data.name} menu={<Menu currentKey={current} items={items}/>}>
         <Space className={classnames('container', style['main'])} direction="vertical">
             <h2 className={style['part-title']}>概述</h2>
             <Highlight className="mark-down-html" html={data.summary}/>

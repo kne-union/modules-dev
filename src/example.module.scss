@@ -32,13 +32,18 @@
       }
     }
 
-    code {
-      margin: 0 1px;
+    pre {
+      background: #f2f4f5;
+      word-wrap: break-word;
+      white-space: pre-wrap;
       padding: 0.2em 0.4em;
       font-size: 0.9em;
-      background: #f2f4f5;
       border: 1px solid #eee;
       border-radius: 3px;
+    }
+
+    code {
+      background: #f2f4f5;
     }
   }
 }
@@ -60,6 +65,10 @@
 .example {
   :global(.example-driver-switch):hover {
     color: #5CB8B2;
+  }
+
+  :global(.example-driver-des) {
+    white-space: pre-line;
   }
 }
 

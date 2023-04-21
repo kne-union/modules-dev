@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -42,6 +42,7 @@
   },
   "peerDependencies": {
     "@craco/craco": ">=7.0.0",
+    "loader-utils": "*",
     "antd": ">=5",
     "react": ">=18",
     "react-router-dom": ">=6.4",

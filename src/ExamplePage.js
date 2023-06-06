@@ -11,12 +11,12 @@ import Highlight from './Highlight';
 
 const ExampleDriverContext = ({children}) => {
     return <HashRouter>
-        <RemoteLoader module="Global@GlobalProvider">{children}</RemoteLoader>
+        <RemoteLoader module="components-core:Global@GlobalProvider">{children}</RemoteLoader>
     </HashRouter>
 };
 
 const ExamplePage = createWithRemoteLoader({
-    modules: ["Layout@Page", "Layout@Menu"]
+    modules: ["components-core:Layout@Page", "components-core:Layout@Menu"]
 })(({remoteModules, data, current, items, pageProps = {}}) => {
     const [Page, Menu] = remoteModules;
 

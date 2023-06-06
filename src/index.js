@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Navigate, Route, Routes, useLocation, Outlet} from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, Outlet} from 'react-router-dom';
 import {createWithRemoteLoader} from '@kne/remote-loader';
 import ensureSlash from '@kne/ensure-slash';
 import {Result, FloatButton} from 'antd';
@@ -10,7 +10,7 @@ import ExamplePage from './ExamplePage';
 
 const ModulesIsEmpty = ({readme}) => {
     const location = useLocation();
-    if (readme && Object.keys(readme).length > 0 && ensureSlash(location.pathname) === '/modules-dev') {
+    if (readme && Object.keys(readme).length > 0 && ensureSlash(location.pathname) === '/modules-dev/components') {
         return <Navigate to={`/modules-dev/components/${Object.keys(readme)[0]}`}/>;
     }
     if (readme && Object.keys(readme).length > 0) {
@@ -23,27 +23,36 @@ const ModulesIsEmpty = ({readme}) => {
     />
 };
 
+const EntryButton = () => {
+    const navigate = useNavigate();
+    return <FloatButton icon={<ToolOutlined/>} onClick={() => {
+        navigate('/modules-dev/components');
+    }}/>;
+};
+
 
 const createEntry = (WrappedComponents) => createWithRemoteLoader({
     modules: ["components-core:Global", "components-core:Layout", "components-function:PostCat", "components-function:PostCat@defaultApis"]
-})(({remoteModules, ...props}) => {
+})(({remoteModules, preset, ...props}) => {
     const [Global, Layout, PostCat, defaultApis] = remoteModules;
     return <BrowserRouter>
         <Routes>
-            <Route path="/modules-dev" element={<ModulesIsEmpty readme={readme}/>}>
-                <Route element={<Global><Layout navigation={{
-                    list:[{
+            <Route path="/modules-dev">
+                <Route element={<Global preset={preset}><Layout navigation={{
+                    list: [{
+                        key: 'components', title: '组件', path: '/modules-dev/components'
+                    }, {
                         key: 'api', title: '接口', path: '/modules-dev/api'
                     }]
                 }}><Outlet/></Layout></Global>}>
-                    <Route path="components/:id" element={<Example readme={readme}/>}/>
+                    <Route path="components" element={<ModulesIsEmpty readme={readme}/>}>
+                        <Route path=":id" element={<Example readme={readme}/>}/>
+                    </Route>
                     <Route path="api" element={<PostCat apis={defaultApis}/>}/>
                 </Route>
             </Route>
             <Route path='*'
-                   element={<><WrappedComponents {...props}/><FloatButton icon={<ToolOutlined/>} onClick={() => {
-                       window.location.href = '/modules-dev/components';
-                   }}/></>}/>
+                   element={<><WrappedComponents {...props}/><EntryButton/></>}/>
         </Routes>
     </BrowserRouter>;
 });

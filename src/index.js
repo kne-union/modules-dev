@@ -11,7 +11,7 @@ import ExamplePage from './ExamplePage';
 const ModulesIsEmpty = ({readme}) => {
     const location = useLocation();
     if (readme && Object.keys(readme).length > 0 && ensureSlash(location.pathname) === '/modules-dev') {
-        return <Navigate to={`/modules-dev/${Object.keys(readme)[0]}`}/>;
+        return <Navigate to={`/modules-dev/components/${Object.keys(readme)[0]}`}/>;
     }
     if (readme && Object.keys(readme).length > 0) {
         return <Outlet/>
@@ -25,17 +25,24 @@ const ModulesIsEmpty = ({readme}) => {
 
 
 const createEntry = (WrappedComponents) => createWithRemoteLoader({
-    modules: ["Global", "Layout"]
+    modules: ["components-core:Global", "components-core:Layout", "components-function:PostCat", "components-function:PostCat@defaultApis"]
 })(({remoteModules, ...props}) => {
-    const [Global, Layout] = remoteModules;
+    const [Global, Layout, PostCat, defaultApis] = remoteModules;
     return <BrowserRouter>
         <Routes>
             <Route path="/modules-dev" element={<ModulesIsEmpty readme={readme}/>}>
-                <Route path=":id" element={<Global><Layout><Example readme={readme}/></Layout></Global>}/>
+                <Route element={<Global><Layout navigation={{
+                    list:[{
+                        key: 'api', title: '接口', path: '/modules-dev/api'
+                    }]
+                }}><Outlet/></Layout></Global>}>
+                    <Route path="components/:id" element={<Example readme={readme}/>}/>
+                    <Route path="api" element={<PostCat apis={defaultApis}/>}/>
+                </Route>
             </Route>
             <Route path='*'
                    element={<><WrappedComponents {...props}/><FloatButton icon={<ToolOutlined/>} onClick={() => {
-                       window.location.href = '/modules-dev';
+                       window.location.href = '/modules-dev/components';
                    }}/></>}/>
         </Routes>
     </BrowserRouter>;

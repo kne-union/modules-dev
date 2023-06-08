@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, Outlet} from 'react-router-dom';
 import {createWithRemoteLoader} from '@kne/remote-loader';
 import ensureSlash from '@kne/ensure-slash';
@@ -10,8 +10,8 @@ import ExamplePage from './ExamplePage';
 
 const ModulesIsEmpty = ({readme}) => {
     const location = useLocation();
-    if (readme && Object.keys(readme).length > 0 && ensureSlash(location.pathname) === '/modules-dev/components') {
-        return <Navigate to={`/modules-dev/components/${Object.keys(readme)[0]}`}/>;
+    if (readme && Object.keys(readme).length > 0 && ensureSlash(location.pathname) === '/modules-dev-components') {
+        return <Navigate to={`/modules-dev-components/${Object.keys(readme)[0]}`}/>;
     }
     if (readme && Object.keys(readme).length > 0) {
         return <Outlet/>
@@ -26,30 +26,65 @@ const ModulesIsEmpty = ({readme}) => {
 const EntryButton = () => {
     const navigate = useNavigate();
     return <FloatButton icon={<ToolOutlined/>} onClick={() => {
-        navigate('/modules-dev/components');
+        navigate('/modules-dev-components');
     }}/>;
 };
 
+const MainLayout = createWithRemoteLoader({
+    modules: ["components-core:Global", "components-core:Layout"]
+})(({remoteModules, preset}) => {
+    const [Global, Layout] = remoteModules;
+    return <Global preset={preset}><Layout navigation={{
+        list: [{
+            key: 'components', title: '组件', path: '/modules-dev-components'
+        }, {
+            key: 'api', title: '接口', path: '/modules-dev-api'
+        }]
+    }}><Outlet/></Layout></Global>;
+});
+
 
 const createEntry = (WrappedComponents) => createWithRemoteLoader({
-    modules: ["components-core:Global", "components-core:Layout", "components-function:PostCat", "components-function:PostCat@defaultApis"]
-})(({remoteModules, preset, ...props}) => {
-    const [Global, Layout, PostCat, defaultApis] = remoteModules;
+    modules: ["components-function:PostCat", "components-function:PostCat@defaultApis"]
+})(({remoteModules, preset, projectName, ...props}) => {
+    const [PostCat, defaultApis] = remoteModules;
+    useEffect(() => {
+        if (!preset.ajax) {
+            return;
+        }
+        preset.ajax.interceptors.request.use((config) => {
+            config.startTime = new Date();
+            return config;
+        });
+        preset.ajax.interceptors.response.use((response) => {
+            !/^\/node-api\//.test(response.config.url) && preset.ajax({
+                url: '/node-api/api-manager/history/add', method: 'POST', data: {
+                    url: response.config.url, props: {
+                        request: {
+                            method: response.config.method,
+                            headers: response.config.headers,
+                            data: response.config.data,
+                            params: response.config.params,
+                            baseUrl: response.config.baseURL
+                        }, response: {
+                            data: response.data,
+                            headers: response.headers,
+                            status: response.status,
+                            statusText: response.statusText
+                        }
+                    }, duration: (new Date()) - response.config.startTime, projectTag: projectName
+                }, showError: false
+            });
+            return response;
+        });
+    }, [preset.ajax]);
     return <BrowserRouter>
         <Routes>
-            <Route path="/modules-dev">
-                <Route element={<Global preset={preset}><Layout navigation={{
-                    list: [{
-                        key: 'components', title: '组件', path: '/modules-dev/components'
-                    }, {
-                        key: 'api', title: '接口', path: '/modules-dev/api'
-                    }]
-                }}><Outlet/></Layout></Global>}>
-                    <Route path="components" element={<ModulesIsEmpty readme={readme}/>}>
-                        <Route path=":id" element={<Example readme={readme}/>}/>
-                    </Route>
-                    <Route path="api" element={<PostCat apis={defaultApis}/>}/>
+            <Route element={<MainLayout preset={preset}/>}>
+                <Route path="modules-dev-components" element={<ModulesIsEmpty readme={readme}/>}>
+                    <Route path=":id" element={<Example readme={readme}/>}/>
                 </Route>
+                <Route path="modules-dev-api" element={<PostCat apis={defaultApis} tag={projectName}/>}/>
             </Route>
             <Route path='*'
                    element={<><WrappedComponents {...props}/><EntryButton/></>}/>

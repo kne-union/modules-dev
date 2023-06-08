@@ -8,7 +8,7 @@ const Example = ({readme}) => {
     const data = readme[current];
     return <ExamplePage data={data} current={current} items={Object.keys(readme).map((name) => {
         return {
-            label: name, key: name, path: '/modules-dev/components/' + name
+            label: name, key: name, path: '/modules-dev-components/' + name
         };
     })}/>
 };

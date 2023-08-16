@@ -43,10 +43,9 @@ const MainLayout = createWithRemoteLoader({
     }}><Outlet/></Layout></Global>;
 });
 
-
-const createEntry = (WrappedComponents) => createWithRemoteLoader({
+const PostCat = createWithRemoteLoader({
     modules: ["components-function:PostCat", "components-function:PostCat@defaultApis"]
-})(({remoteModules, preset, projectName, ...props}) => {
+})((remoteModules, preset, projectName) => {
     const [PostCat, defaultApis] = remoteModules;
     useEffect(() => {
         if (!preset.ajax) {
@@ -78,16 +77,22 @@ const createEntry = (WrappedComponents) => createWithRemoteLoader({
             return response;
         });
     }, [preset.ajax]);
+    return <PostCat apis={defaultApis} tag={projectName}/>;
+});
+
+
+const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName, ...props}) => {
     return <BrowserRouter>
         <Routes>
             <Route element={<MainLayout preset={preset}/>}>
                 <Route path="modules-dev-components" element={<ModulesIsEmpty readme={readme}/>}>
                     <Route path=":id" element={<Example readme={readme}/>}/>
                 </Route>
-                <Route path="modules-dev-api" element={<PostCat apis={defaultApis} tag={projectName}/>}/>
+                <Route path="modules-dev-api"
+                       element={projectName ? <PostCat preset={preset} projectName={projectName}/> :
+                           <Result status='404' title="请传入projectName以开启PostCat"/>}/>
             </Route>
-            <Route path='*'
-                   element={<><WrappedComponents {...props}/><EntryButton/></>}/>
+            <Route path='*' element={<><WrappedComponents {...props}/><EntryButton/></>}/>
         </Routes>
     </BrowserRouter>;
 });

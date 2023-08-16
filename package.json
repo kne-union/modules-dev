@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -30,7 +30,7 @@
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.6",
     "@kne/md-doc": "^0.1.8",
-    "@kne/remote-loader": "^1.0.1",
+    "@kne/remote-loader": "^1.0.7",
     "chokidar": "^3.5.3",
     "classnames": "^2.3.2",
     "fs-extra": "^11.1.0",

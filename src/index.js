@@ -32,9 +32,9 @@ const EntryButton = () => {
 
 const MainLayout = createWithRemoteLoader({
     modules: ["components-core:Global", "components-core:Layout"]
-})(({remoteModules, preset}) => {
+})(({remoteModules, preset, ...props}) => {
     const [Global, Layout] = remoteModules;
-    return <Global preset={preset}><Layout navigation={{
+    return <Global {...props} preset={preset}><Layout navigation={{
         list: [{
             key: 'components', title: '组件', path: '/modules-dev-components'
         }, {
@@ -81,10 +81,10 @@ const PostCat = createWithRemoteLoader({
 });
 
 
-const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName, ...props}) => {
+const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName, themeToken, ...props}) => {
     return <BrowserRouter>
         <Routes>
-            <Route element={<MainLayout preset={preset}/>}>
+            <Route element={<MainLayout preset={preset} themeToken={themeToken}/>}>
                 <Route path="modules-dev-components" element={<ModulesIsEmpty readme={readme}/>}>
                     <Route path=":id" element={<Example readme={readme}/>}/>
                 </Route>

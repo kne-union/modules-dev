@@ -1,5 +1,5 @@
 import '@kne/example-driver/dist/index.css';
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import get from "lodash/get";
 import {Space} from "antd";
 import style from "./example.module.scss";
@@ -10,21 +10,23 @@ import {createWithRemoteLoader} from '@kne/remote-loader';
 import Highlight from './Highlight';
 
 const ExampleDriverContext = createWithRemoteLoader({
-    modules: ["components-core:Global@GlobalProvider", "components-core:Global@useGlobalContext"]
-})(({remoteModules, children}) => {
-    const [GlobalProvider, useGlobalContext] = remoteModules;
-    const themeToken = useGlobalContext("themeToken");
+    modules: ["components-core:Global@GlobalProvider"]
+})(({remoteModules, themeToken, children}) => {
+    const [GlobalProvider] = remoteModules;
     return <HashRouter>
         <GlobalProvider themeToken={themeToken}>{children}</GlobalProvider>
     </HashRouter>
 });
 
 const ExamplePage = createWithRemoteLoader({
-    modules: ["components-core:Layout@Page", "components-core:Layout@Menu"]
+    modules: ["components-core:Layout@Page", "components-core:Layout@Menu", "components-core:Global@useGlobalContext"]
 })(({remoteModules, data, current, items, pageProps = {}}) => {
-    const [Page, Menu] = remoteModules;
-
+    const [Page, Menu, useGlobalContext] = remoteModules;
+    const {global: themeToken} = useGlobalContext("themeToken");
     const exampleStyle = get(data, 'example.style');
+    const DriverContext = useMemo(() => {
+        return (props) => <ExampleDriverContext {...props} themeToken={themeToken}/>
+    }, [themeToken]);
     useEffect(() => {
         if (!exampleStyle) {
             return;
@@ -42,7 +44,7 @@ const ExamplePage = createWithRemoteLoader({
             <Highlight className="mark-down-html" html={data.summary}/>
             <h2 className={style['part-title']}>代码示例</h2>
             <div className={classnames(style['example'], data.example.className)}>
-                <ExampleDriver contextComponent={ExampleDriverContext} isFull={data.example.isFull}
+                <ExampleDriver contextComponent={DriverContext} isFull={data.example.isFull}
                                list={data.example.list}/>
             </div>
             <h2 className={style['part-title']}>API</h2>

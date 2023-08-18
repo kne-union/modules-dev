@@ -6,14 +6,18 @@ import style from "./example.module.scss";
 import classnames from "classnames";
 import ExampleDriver from "@kne/example-driver";
 import {HashRouter} from "react-router-dom";
-import RemoteLoader, {createWithRemoteLoader} from '@kne/remote-loader';
+import {createWithRemoteLoader} from '@kne/remote-loader';
 import Highlight from './Highlight';
 
-const ExampleDriverContext = ({children}) => {
+const ExampleDriverContext = createWithRemoteLoader({
+    modules: ["components-core:Global@GlobalProvider", "components-core:Global@useGlobalContext"]
+})(({remoteModules, children}) => {
+    const [GlobalProvider, useGlobalContext] = remoteModules;
+    const themeToken = useGlobalContext("themeToken");
     return <HashRouter>
-        <RemoteLoader module="components-core:Global@PureGlobal">{children}</RemoteLoader>
+        <GlobalProvider themeToken={themeToken}>{children}</GlobalProvider>
     </HashRouter>
-};
+});
 
 const ExamplePage = createWithRemoteLoader({
     modules: ["components-core:Layout@Page", "components-core:Layout@Menu"]

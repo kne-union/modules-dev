@@ -11,7 +11,7 @@ import Highlight from './Highlight';
 
 const ExampleDriverContext = ({children}) => {
     return <HashRouter>
-        <RemoteLoader module="components-core:Global@GlobalProvider">{children}</RemoteLoader>
+        <RemoteLoader module="components-core:Global@PureGlobal">{children}</RemoteLoader>
     </HashRouter>
 };
 

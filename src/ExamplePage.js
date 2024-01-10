@@ -18,6 +18,20 @@ const ExampleDriverContext = createWithRemoteLoader({
     </HashRouter>
 });
 
+export const ExampleContent = ({data, contextComponent}) => {
+    return <Space className={classnames('container', style['main'])} direction="vertical">
+        <h2 className={style['part-title']}>概述</h2>
+        <Highlight className="mark-down-html" html={data.summary}/>
+        <h2 className={style['part-title']}>代码示例</h2>
+        <div className={classnames(style['example'], data.example.className)}>
+            <ExampleDriver contextComponent={contextComponent} isFull={data.example.isFull}
+                           list={data.example.list}/>
+        </div>
+        <h2 className={style['part-title']}>API</h2>
+        <Highlight className="mark-down-html" html={data.api}/>
+    </Space>
+};
+
 const ExamplePage = createWithRemoteLoader({
     modules: ["components-core:Layout@Page", "components-core:Layout@Menu", "components-core:Global@useGlobalContext"]
 })(({remoteModules, data, current, items, pageProps = {}}) => {
@@ -39,17 +53,7 @@ const ExamplePage = createWithRemoteLoader({
         };
     }, [exampleStyle]);
     return <Page {...pageProps} title={data.name} menu={<Menu currentKey={current} items={items}/>}>
-        <Space className={classnames('container', style['main'])} direction="vertical">
-            <h2 className={style['part-title']}>概述</h2>
-            <Highlight className="mark-down-html" html={data.summary}/>
-            <h2 className={style['part-title']}>代码示例</h2>
-            <div className={classnames(style['example'], data.example.className)}>
-                <ExampleDriver contextComponent={DriverContext} isFull={data.example.isFull}
-                               list={data.example.list}/>
-            </div>
-            <h2 className={style['part-title']}>API</h2>
-            <Highlight className="mark-down-html" html={data.api}/>
-        </Space>
+        <ExampleContent data={data} contextComponent={DriverContext} />
     </Page>
 });
 

@@ -6,7 +6,7 @@ import {Result, FloatButton} from 'antd';
 import {ToolOutlined} from '@ant-design/icons';
 import Example from './Example';
 import readme from "readme";
-import ExamplePage from './ExamplePage';
+import ExamplePage, {ExampleContent} from './ExamplePage';
 
 const ModulesIsEmpty = ({readme}) => {
     const location = useLocation();
@@ -98,5 +98,6 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
 });
 
 createEntry.ExamplePage = ExamplePage;
+createEntry.ExampleContent = ExampleContent;
 
 export default createEntry;

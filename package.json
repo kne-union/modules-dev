@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -8,7 +8,8 @@
   },
   "main": "index.js",
   "bin": {
-    "modules-dev-create": "lib/init-module.js"
+    "modules-dev-create": "lib/init-module.js",
+    "modules-dev-lib": "lib/create-lib.js"
   },
   "files": [
     "dist",

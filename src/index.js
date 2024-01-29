@@ -5,11 +5,12 @@ import ensureSlash from '@kne/ensure-slash';
 import {Result, FloatButton} from 'antd';
 import Example from './Example';
 import ExamplePage, {ExampleContent} from './ExamplePage';
+import get from 'lodash/get';
 
-const ModulesIsEmpty = ({readme}) => {
+const ModulesIsEmpty = ({readme, baseUrl}) => {
     const location = useLocation();
-    if (readme && Object.keys(readme).length > 0 && ensureSlash(location.pathname) === '/modules-dev-components') {
-        return <Navigate to={`/modules-dev-components/${Object.keys(readme)[0]}`}/>;
+    if (readme && Object.keys(readme).length > 0 && ensureSlash(location.pathname, true) === baseUrl) {
+        return <Navigate to={`${baseUrl}${Object.keys(readme)[0]}`}/>;
     }
     if (readme && Object.keys(readme).length > 0) {
         return <Outlet/>
@@ -33,14 +34,10 @@ const EntryButton = createWithRemoteLoader({
 
 const MainLayout = createWithRemoteLoader({
     modules: ["components-core:Global", "components-core:Layout"]
-})(({remoteModules, preset, ...props}) => {
+})(({remoteModules, paths, preset, ...props}) => {
     const [Global, Layout] = remoteModules;
     return <Global {...props} preset={preset}><Layout navigation={{
-        list: [{
-            key: 'components', title: '组件', path: '/modules-dev-components'
-        }, {
-            key: 'api', title: '接口', path: '/modules-dev-api'
-        }]
+        showIndex: false, list: paths
     }}><Outlet/></Layout></Global>;
 });
 
@@ -81,19 +78,29 @@ const PostCat = createWithRemoteLoader({
     return <PostCat apis={defaultApis} tag={projectName}/>;
 });
 
-const ExampleRoutes = ({preset, themeToken, projectName, paths = {}, readme, children}) => {
-    paths = Object.assign({components: 'components', postcat: 'postcat'}, paths);
+const ExampleRoutes = ({preset, themeToken, projectName, paths, readme, children}) => {
+    const componentsBaseUrl = ensureSlash(get(paths.find((item) => item.key === 'components'), 'path', '/'), true);
     return <Routes>
-        <Route element={<MainLayout preset={preset} themeToken={themeToken}/>}>
-            <Route path={paths.components} element={<ModulesIsEmpty readme={readme}/>}>
-                <Route path=":id" element={<Example baseUrl={paths.components} readme={readme}/>}/>
+        <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken}/>}>
+            <Route path={componentsBaseUrl} element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
+                <Route path=":id" element={<Example baseUrl={componentsBaseUrl} readme={readme}/>}/>
             </Route>
-            <Route path={paths.postcat}
+            <Route path={get(paths.find((item) => item.key === 'postcat'), 'path', '/')}
                    element={projectName ? <PostCat preset={preset} projectName={projectName}/> :
                        <Result status='404' title="请传入projectName以开启PostCat"/>}/>
         </Route>
         <Route path='*' element={children}/>
     </Routes>
+};
+
+ExampleRoutes.defaultProps = {
+    paths: [{
+        key: 'index', path: '/', title: '首页'
+    }, {
+        key: 'components', path: '/components', title: '组件'
+    }, {
+        key: 'postcat', path: '/postcat', title: '接口'
+    }]
 };
 
 
@@ -106,10 +113,15 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
     }, []);
     return <BrowserRouter>
         {Object.keys(readme).length > 0 ? <ExampleRoutes preset={preset} projectName={projectName} readme={readme}
-                                                         paths={{
-                                                             components: 'modules-dev-components',
-                                                             postcat: 'modules-dev-api'
-                                                         }}
+                                                         paths={[{
+                                                             key: 'index', path: '/', title: '首页'
+                                                         }, {
+                                                             key: 'components',
+                                                             path: '/modules-dev-components',
+                                                             title: '组件'
+                                                         }, {
+                                                             key: 'postcat', path: '/modules-dev-postcat', title: '接口'
+                                                         }]}
                                                          themeToken={themeToken}>
             <WrappedComponents {...props}/><EntryButton/>
         </ExampleRoutes> : <WrappedComponents {...props}/>}

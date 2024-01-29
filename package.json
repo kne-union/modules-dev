@@ -1,15 +1,17 @@
 {
   "name": "@kne/modules-dev",
-  "version": "0.1.24",
+  "version": "0.1.25",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
     "main": "dist/create-entry.js"
   },
+  "syntax": {
+    "esmodules": true
+  },
   "main": "index.js",
   "bin": {
-    "modules-dev-create": "lib/init-module.js",
-    "modules-dev-lib": "lib/create-lib.js"
+    "modules-dev-create": "lib/init-module.js"
   },
   "files": [
     "dist",
@@ -24,7 +26,6 @@
   "author": "linzp",
   "license": "ISC",
   "dependencies": {
-    "@ant-design/icons": "^5.0.1",
     "@kne/apply-template": "^0.1.1",
     "@kne/camel-case": "^0.1.1",
     "@kne/craco-module-federation": "^1.1.1",

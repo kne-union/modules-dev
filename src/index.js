@@ -1,11 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, Outlet} from 'react-router-dom';
 import {createWithRemoteLoader} from '@kne/remote-loader';
 import ensureSlash from '@kne/ensure-slash';
 import {Result, FloatButton} from 'antd';
-import {ToolOutlined} from '@ant-design/icons';
 import Example from './Example';
-import readme from "readme";
 import ExamplePage, {ExampleContent} from './ExamplePage';
 
 const ModulesIsEmpty = ({readme}) => {
@@ -23,12 +21,15 @@ const ModulesIsEmpty = ({readme}) => {
     />
 };
 
-const EntryButton = () => {
+const EntryButton = createWithRemoteLoader({
+    modules: ['components-core:Icon']
+})(({remoteModules}) => {
+    const [Icon] = remoteModules;
     const navigate = useNavigate();
-    return <FloatButton icon={<ToolOutlined/>} onClick={() => {
+    return <FloatButton icon={<Icon className="icon" type="icon-liangdian"/>} onClick={() => {
         navigate('/modules-dev-components');
     }}/>;
-};
+});
 
 const MainLayout = createWithRemoteLoader({
     modules: ["components-core:Global", "components-core:Layout"]
@@ -80,23 +81,42 @@ const PostCat = createWithRemoteLoader({
     return <PostCat apis={defaultApis} tag={projectName}/>;
 });
 
+const ExampleRoutes = ({preset, themeToken, projectName, paths = {}, readme, children}) => {
+    paths = Object.assign({components: 'components', postcat: 'postcat'}, paths);
+    return <Routes>
+        <Route element={<MainLayout preset={preset} themeToken={themeToken}/>}>
+            <Route path={paths.components} element={<ModulesIsEmpty readme={readme}/>}>
+                <Route path=":id" element={<Example baseUrl={paths.components} readme={readme}/>}/>
+            </Route>
+            <Route path={paths.postcat}
+                   element={projectName ? <PostCat preset={preset} projectName={projectName}/> :
+                       <Result status='404' title="请传入projectName以开启PostCat"/>}/>
+        </Route>
+        <Route path='*' element={children}/>
+    </Routes>
+};
+
 
 const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName, themeToken, ...props}) => {
+    const [readme, setReadme] = useState({});
+    useEffect(() => {
+        import('readme').then((module) => {
+            setReadme(module.__esModule === true ? module.default : module);
+        });
+    }, []);
     return <BrowserRouter>
-        <Routes>
-            <Route element={<MainLayout preset={preset} themeToken={themeToken}/>}>
-                <Route path="modules-dev-components" element={<ModulesIsEmpty readme={readme}/>}>
-                    <Route path=":id" element={<Example readme={readme}/>}/>
-                </Route>
-                <Route path="modules-dev-api"
-                       element={projectName ? <PostCat preset={preset} projectName={projectName}/> :
-                           <Result status='404' title="请传入projectName以开启PostCat"/>}/>
-            </Route>
-            <Route path='*' element={<><WrappedComponents {...props}/><EntryButton/></>}/>
-        </Routes>
+        {Object.keys(readme).length > 0 ? <ExampleRoutes preset={preset} projectName={projectName} readme={readme}
+                                                         paths={{
+                                                             components: 'modules-dev-components',
+                                                             postcat: 'modules-dev-api'
+                                                         }}
+                                                         themeToken={themeToken}>
+            <WrappedComponents {...props}/><EntryButton/>
+        </ExampleRoutes> : <WrappedComponents {...props}/>}
     </BrowserRouter>;
 });
 
+createEntry.ExampleRoutes = ExampleRoutes;
 createEntry.ExamplePage = ExamplePage;
 createEntry.ExampleContent = ExampleContent;
 

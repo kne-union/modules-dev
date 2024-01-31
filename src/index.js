@@ -79,15 +79,19 @@ const PostCat = createWithRemoteLoader({
 });
 
 const ExampleRoutes = ({preset, themeToken, projectName, paths, readme, children}) => {
-    const componentsBaseUrl = ensureSlash(get(paths.find((item) => item.key === 'components'), 'path', '/'), true);
+    const componentsPath = paths.find((item) => item.key === 'components');
+    const componentsBaseUrl = ensureSlash(get(componentsPath, 'path', '/'), true);
+    const postcatPath = paths.find((item) => item.key === 'postcat');
+    const postcatUrl = get(postcatPath, 'path', '/postcat');
     return <Routes>
         <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken}/>}>
-            <Route path={componentsBaseUrl} element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
-                <Route path=":id" element={<Example baseUrl={componentsBaseUrl} readme={readme}/>}/>
-            </Route>
-            <Route path={get(paths.find((item) => item.key === 'postcat'), 'path', '/')}
-                   element={projectName ? <PostCat preset={preset} projectName={projectName}/> :
-                       <Result status='404' title="请传入projectName以开启PostCat"/>}/>
+            {componentsPath &&
+                <Route path={componentsBaseUrl} element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
+                    <Route path=":id" element={<Example baseUrl={componentsBaseUrl} readme={readme}/>}/>
+                </Route>}
+            {postcatPath && <Route path={postcatUrl}
+                                   element={projectName ? <PostCat preset={preset} projectName={projectName}/> :
+                                       <Result status='404' title="请传入projectName以开启PostCat"/>}/>}
         </Route>
         <Route path='*' element={children}/>
     </Routes>
@@ -111,7 +115,7 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
             setReadme(module.__esModule === true ? module.default : module);
         });
     }, []);
-    return <BrowserRouter>
+    return <>
         {Object.keys(readme).length > 0 ? <ExampleRoutes preset={preset} projectName={projectName} readme={readme}
                                                          paths={[{
                                                              key: 'index', path: '/', title: '首页'
@@ -119,13 +123,13 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
                                                              key: 'components',
                                                              path: '/modules-dev-components',
                                                              title: '组件'
-                                                         }, {
+                                                         }, ...([projectName ? {
                                                              key: 'postcat', path: '/modules-dev-postcat', title: '接口'
-                                                         }]}
+                                                         } : []])]}
                                                          themeToken={themeToken}>
             <WrappedComponents {...props}/><EntryButton/>
         </ExampleRoutes> : <WrappedComponents {...props}/>}
-    </BrowserRouter>;
+    </>;
 });
 
 createEntry.ExampleRoutes = ExampleRoutes;

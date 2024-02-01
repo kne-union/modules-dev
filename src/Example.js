@@ -4,8 +4,7 @@ import ExamplePage from './ExamplePage';
 import ensureSlash from '@kne/ensure-slash';
 
 const Example = ({baseUrl, readme, pageProps}) => {
-    const {id} = useParams();
-    const current = id || Object.keys(readme)[0];
+    const {id: current} = useParams();
     const data = readme[current];
 
     if (!readme[current]) {

@@ -131,7 +131,7 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
         </ExampleRoutes> : <WrappedComponents {...props}/>}
     </>;
 });
-
+createEntry.Example = Example;
 createEntry.ExampleRoutes = ExampleRoutes;
 createEntry.ExamplePage = ExamplePage;
 createEntry.ExampleContent = ExampleContent;

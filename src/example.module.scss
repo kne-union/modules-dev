@@ -64,7 +64,7 @@
 
 .example {
   :global(.example-driver-switch):hover {
-    color: #5CB8B2;
+    color: var(--primary-color);
   }
 
   :global(.example-driver-des) {

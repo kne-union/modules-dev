@@ -20,6 +20,7 @@ const App = ({ preset, themeToken, ...props }) => {
             preset={preset}
             themeToken={themeToken}
             readme={readme}
+            pageProps={{ menu: null }}
         />
       </HashRouter>
   );

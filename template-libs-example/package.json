@@ -39,7 +39,7 @@
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@kne/craco-module-federation": "^1.1.2",
-    "@kne/modules-dev": "^1.1.0",
+    "@kne/modules-dev": "file:../nodule_modules/@kne/modules-dev",
     "@kne/react-fetch": "^1.4.2",
     "@kne/remote-loader": "^1.2.3",
     "antd": "^5.13.3",

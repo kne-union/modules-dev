@@ -57,8 +57,7 @@ const ExamplePage = createWithRemoteLoader({
     modules: ["components-core:Layout@Page", "components-core:Layout@Menu", "components-core:Global@useGlobalContext"]
 })(({remoteModules, data, current, items, pageProps = {}}) => {
     const [Page, Menu] = remoteModules;
-    return <Page {...pageProps} title={data.name}
-                 menu={items && items.length > 0 && <Menu currentKey={current} items={items}/>}>
+    return <Page title={data.name} menu={items && items.length > 0 && <Menu currentKey={current} items={items}/>} {...pageProps}>
         <ExampleContent data={data}/>
     </Page>
 });

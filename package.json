@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "1.0.6",
+  "version": "1.1.0-alpha.0",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -11,12 +11,14 @@
   },
   "main": "index.js",
   "bin": {
-    "modules-dev-create": "lib/init-module.js"
+    "modules-dev-create": "lib/init-module.js",
+    "modules-dev-libs-init": "lib/init-libs-example.js"
   },
   "files": [
     "dist",
     "lib",
     "template",
+    "template-libs-example",
     "index.js"
   ],
   "scripts": {
@@ -35,6 +37,7 @@
     "@kne/remote-loader": "^1.0.7",
     "chokidar": "^3.5.3",
     "classnames": "^2.3.2",
+    "cross-spawn-promise": "^0.10.2",
     "fs-extra": "^11.1.0",
     "highlight.js": "^11.7.0",
     "inquirer": "^8.2.4",
@@ -44,8 +47,8 @@
   },
   "peerDependencies": {
     "@craco/craco": ">=7.0.0",
-    "loader-utils": "*",
     "antd": ">=5",
+    "loader-utils": "*",
     "react": ">=18",
     "react-router-dom": ">=6.4",
     "react-scripts": ">=5"

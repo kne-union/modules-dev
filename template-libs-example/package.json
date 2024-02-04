@@ -1,6 +1,6 @@
 {
   "name": "@kne-components/<%=name%>",
-  "version": "2.1.25",
+  "version": "0.1.1",
   "dependencies": {
     "<%=packageName%>": "file:..",
     "react": "file:../node_modules/react",
@@ -12,11 +12,7 @@
   ],
   "scripts": {
     "start": "cross-env PORT=3020 MODULES_DEV_PUBLIC_URL=/ craco start",
-    "build": "cross-env COMPONENTS_NAME=<%=name%> MODULES_DEV_PUBLIC_URL=/<%=name%>  craco build",
-    "test": "craco test --coverage",
-    "eject": "react-scripts eject",
-    "init": "npm i --legacy-peer-deps",
-    "create": "modules-dev-create"
+    "build": "cross-env COMPONENTS_NAME=<%=name%> MODULES_DEV_PUBLIC_URL=/<%=name%>  craco build"
   },
   "eslintConfig": {
     "extends": [
@@ -37,7 +33,7 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
+    "@craco/craco": "file:../nodule_modules/@craco/craco",
     "@kne/craco-module-federation": "^1.1.2",
     "@kne/modules-dev": "file:../nodule_modules/@kne/modules-dev",
     "@kne/react-fetch": "^1.4.2",

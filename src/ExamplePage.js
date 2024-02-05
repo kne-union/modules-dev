@@ -41,6 +41,15 @@ export const ExampleContent = createWithRemoteLoader({
     }, [exampleStyle]);
 
     return <Space className={classnames('container', style['main'])} direction="vertical">
+        {data.packageName && <>
+            <h2 className={style['part-title']}>安装</h2>
+            <Highlight className="mark-down-html"
+                       html={`<pre><code class="language-shell hljs">npm install --save ${data.packageName}</code></pre>`}/>
+        </>}
+        {data.description && <>
+            <h2 className={style['part-title']}>描述</h2>
+            <Highlight className="mark-down-html" html={data.description}/>
+        </>}
         <h2 className={style['part-title']}>概述</h2>
         <Highlight className="mark-down-html" html={data.summary}/>
         <h2 className={style['part-title']}>代码示例</h2>
@@ -57,7 +66,8 @@ const ExamplePage = createWithRemoteLoader({
     modules: ["components-core:Layout@Page", "components-core:Layout@Menu", "components-core:Global@useGlobalContext"]
 })(({remoteModules, data, current, items, pageProps = {}}) => {
     const [Page, Menu] = remoteModules;
-    return <Page title={data.name} menu={items && items.length > 0 && <Menu currentKey={current} items={items}/>} {...pageProps}>
+    return <Page title={data.name}
+                 menu={items && items.length > 0 && <Menu currentKey={current} items={items}/>} {...pageProps}>
         <ExampleContent data={data}/>
     </Page>
 });

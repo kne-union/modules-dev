@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "1.1.5",
+  "version": "2.0.0-alpha.0",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -22,7 +22,8 @@
     "index.js"
   ],
   "scripts": {
-    "build:lib": "microbundle --no-compress --format modern,cjs --jsx React.createElement --jsxFragment React.Fragment"
+    "build:lib": "microbundle --no-compress --format modern,cjs --jsx React.createElement --jsxFragment React.Fragment",
+    "example": "node lib/init-libs-example.js"
   },
   "keywords": [],
   "author": "linzp",

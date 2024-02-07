@@ -78,13 +78,13 @@ const PostCat = createWithRemoteLoader({
     return <PostCat apis={defaultApis} tag={projectName}/>;
 });
 
-const ExampleRoutes = ({preset, themeToken, projectName, paths, readme, pageProps, children}) => {
+const ExampleRoutes = ({preset, themeToken, projectName, paths, readme, pageProps, children, ...props}) => {
     const componentsPath = paths.find((item) => item.key === 'components');
     const componentsBaseUrl = ensureSlash(get(componentsPath, 'path', '/'), true);
     const postcatPath = paths.find((item) => item.key === 'postcat');
     const postcatUrl = get(postcatPath, 'path', '/postcat');
     return <Routes>
-        <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken}/>}>
+        <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken} {...props}/>}>
             {componentsPath &&
                 <Route path={componentsBaseUrl} element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
                     <Route path=":id"
@@ -117,19 +117,18 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
         });
     }, []);
     return <>
-        {Object.keys(readme).length > 0 ? <ExampleRoutes preset={preset} projectName={projectName} readme={readme} pageProps={pageProps}
-                                                         paths={[{
-                                                             key: 'index', path: '/', title: '首页'
-                                                         }, {
-                                                             key: 'components',
-                                                             path: '/modules-dev-components',
-                                                             title: '组件'
-                                                         }, ...([projectName ? {
-                                                             key: 'postcat', path: '/modules-dev-postcat', title: '接口'
-                                                         } : []])]}
-                                                         themeToken={themeToken}>
-            <WrappedComponents {...props}/><EntryButton/>
-        </ExampleRoutes> : <WrappedComponents {...props}/>}
+        {Object.keys(readme).length > 0 ?
+            <ExampleRoutes preset={preset} projectName={projectName} readme={readme} pageProps={pageProps}
+                           paths={[{
+                               key: 'index', path: '/', title: '首页'
+                           }, {
+                               key: 'components', path: '/modules-dev-components', title: '组件'
+                           }, ...([projectName ? {
+                               key: 'postcat', path: '/modules-dev-postcat', title: '接口'
+                           } : []])]}
+                           themeToken={themeToken}>
+                <WrappedComponents {...props}/><EntryButton/>
+            </ExampleRoutes> : <WrappedComponents {...props}/>}
     </>;
 });
 createEntry.Example = Example;

@@ -4,8 +4,7 @@
   "dependencies": {
     "<%=packageName%>": "file:..",
     "react": "file:../node_modules/react",
-    "react-dom": "file:../node_modules/react-dom",
-    "react-scripts": "^5.0.0"
+    "react-dom": "file:../node_modules/react-dom"
   },
   "files": [
     "build"
@@ -33,9 +32,9 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "file:../nodule_modules/@craco/craco",
+    "@craco/craco": "^7.1.0",
     "@kne/craco-module-federation": "^1.1.2",
-    "@kne/modules-dev": "file:../nodule_modules/@kne/modules-dev",
+    "@kne/modules-dev": "^2.0.5",
     "@kne/react-fetch": "^1.4.2",
     "@kne/remote-loader": "^1.2.3",
     "antd": "^5.13.3",
@@ -48,6 +47,7 @@
     "lodash": "^4.17.21",
     "node-sass": "^7.0.3",
     "prettier": "^2.8.8",
-    "react-router-dom": "^6.22.0"
+    "react-router-dom": "^6.22.0",
+    "react-scripts": "^5.0.1"
   }
 }

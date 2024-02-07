@@ -1,4 +1,4 @@
-const {CracoLibsExamplePlugin} = require('@kne/modules-dev');
+const {CracoLibsExamplePlugin, env} = require('@kne/modules-dev');
 const aliasConfig = require('./webstorm.webpack.config');
 
 module.exports = {
@@ -9,6 +9,16 @@ module.exports = {
             return webpackConfig;
         }
     }, plugins: [{
-        plugin: CracoLibsExamplePlugin
+        plugin: CracoLibsExamplePlugin, options: {
+            middleware: (moduleFederationConfig) => {
+                // const shared = Object.assign({}, moduleFederationConfig.shared);
+                // delete shared["<%=packageName%>"];
+                return Object.assign({}, moduleFederationConfig, {
+                    exposes: {
+                        './components': env.manifestPath
+                    },//shared
+                })
+            }
+        }
     }]
 };

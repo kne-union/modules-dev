@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.0.1",
+  "version": "2.0.2-alpha.0",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -31,7 +31,7 @@
   "dependencies": {
     "@kne/apply-template": "^0.1.1",
     "@kne/camel-case": "^0.1.1",
-    "@kne/craco-module-federation": "^1.1.1",
+    "@kne/craco-module-federation": "^1.1.5",
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.6",
     "@kne/md-doc": "^0.1.8",

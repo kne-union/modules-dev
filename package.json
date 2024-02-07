@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -35,7 +35,6 @@
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.6",
     "@kne/md-doc": "^0.1.8",
-    "@kne/remote-loader": "^1.0.7",
     "chokidar": "^3.5.3",
     "classnames": "^2.3.2",
     "cross-spawn-promise": "^0.10.2",
@@ -43,11 +42,12 @@
     "highlight.js": "^11.7.0",
     "inquirer": "^8.2.4",
     "lodash": "^4.17.21",
-    "node-sass": "^8.0.0",
+    "node-sass": "^9.0.0",
     "webpack-virtual-modules": "^0.5.0"
   },
   "peerDependencies": {
     "@craco/craco": ">=7.0.0",
+    "@kne/remote-loader": "*",
     "antd": ">=5",
     "loader-utils": "*",
     "react": ">=18",

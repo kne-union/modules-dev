@@ -11,12 +11,12 @@ module.exports = {
     }, plugins: [{
         plugin: CracoLibsExamplePlugin, options: {
             middleware: (moduleFederationConfig) => {
-                // const shared = Object.assign({}, moduleFederationConfig.shared);
-                // delete shared["<%=packageName%>"];
+                const shared = Object.assign({}, moduleFederationConfig.shared);
+                delete shared["<%=packageName%>"];
                 return Object.assign({}, moduleFederationConfig, {
                     exposes: {
                         './components': env.manifestPath
-                    },//shared
+                    }, shared
                 })
             }
         }

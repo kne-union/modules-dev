@@ -11,23 +11,26 @@ import Highlight from './Highlight';
 
 const ExampleDriverContext = createWithRemoteLoader({
     modules: ["components-core:Global@GlobalProvider"]
-})(({remoteModules, themeToken, children}) => {
+})(({remoteModules, children, ...props}) => {
     const [GlobalProvider] = remoteModules;
     return <HashRouter>
-        <GlobalProvider themeToken={themeToken}>{children}</GlobalProvider>
+        <GlobalProvider {...props}>{children}</GlobalProvider>
     </HashRouter>
 });
 
 export const ExampleContent = createWithRemoteLoader({
-    modules: ["components-core:Global@useGlobalContext"]
+    modules: ["components-core:Global@useGlobalContext", "components-core:Global@usePreset"]
 })(({remoteModules, data}) => {
-    const [useGlobalContext] = remoteModules;
-    const {global: themeToken} = useGlobalContext("themeToken");
+    const [useGlobalContext, usePreset] = remoteModules;
+    const {global: global} = useGlobalContext();
+    const preset = usePreset();
 
     const exampleStyle = get(data, 'example.style');
     const DriverContext = useMemo(() => {
-        return (props) => <ExampleDriverContext {...props} themeToken={themeToken}/>
-    }, [themeToken]);
+        return ({children}) => <ExampleDriverContext {...global} preset={preset}>
+            {children}
+        </ExampleDriverContext>
+    }, [global]);
     useEffect(() => {
         if (!exampleStyle) {
             return;

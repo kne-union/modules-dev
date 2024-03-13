@@ -87,8 +87,8 @@ const ExampleRoutes = ({preset, themeToken, projectName, paths, readme, pageProp
         <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken} {...props}/>}>
             {componentsPath &&
                 <Route path={componentsBaseUrl} element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
-                    <Route path=":id"
-                           element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
+                    <Route path=":id" element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
+                    <Route path=":id/*" element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
                 </Route>}
             {postcatPath && <Route path={postcatUrl}
                                    element={projectName ? <PostCat preset={preset} projectName={projectName}/> :

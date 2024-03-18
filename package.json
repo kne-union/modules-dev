@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -22,6 +22,8 @@
     "index.js"
   ],
   "scripts": {
+    "build:md": "create-md",
+    "start:md": "create-md --watch",
     "build:lib": "microbundle --no-compress --format modern,cjs --jsx React.createElement --jsxFragment React.Fragment",
     "example": "node lib/init-libs-example.js"
   },
@@ -34,7 +36,6 @@
     "@kne/craco-module-federation": "^1.1.5",
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.11",
-    "@kne/md-doc": "^0.1.8",
     "chokidar": "^3.5.3",
     "classnames": "^2.3.2",
     "cross-spawn-promise": "^0.10.2",
@@ -68,6 +69,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@kne/md-doc": "^0.1.8",
     "@kne/microbundle": "^0.15.4"
   }
 }

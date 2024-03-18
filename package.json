@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -36,6 +36,7 @@
     "@kne/craco-module-federation": "^1.1.5",
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.11",
+    "@kne/react-fetch": "^1.4.3",
     "chokidar": "^3.5.3",
     "classnames": "^2.3.2",
     "cross-spawn-promise": "^0.10.2",

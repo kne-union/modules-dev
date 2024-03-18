@@ -1,21 +1,3 @@
-
-# modules-dev
-
-
-### 描述
-
-用于辅助在项目内启动一个规范化组件开发的环境
-
-
-### 安装
-
-```shell
-npm i --save @kne/modules-dev
-```
-
-
-### 概述
-
 modules-dev为所有的项目提供了一个开发环境，让你在开发远程组件或者前端库时有一个运行时的示例展示，并且当对你的项目进行发布的时候可以集成到kne-union文档之中
 
 modules-dev分为三个部分
@@ -105,41 +87,3 @@ if (process.env.NODE_ENV === 'development') {
 ```
 
 注意：以上代码通常由命令行工具生成，不需要自己编写
-
-
-### 示例
-
-#### 示例代码
-
-
-
-### API
-
-```js
-const {CracoRemoteComponentsPlugin,CracoLibsExamplePlugin,env} = require('@kne/modules-dev');
-```
-
-#### CracoRemoteComponentsPlugin
-
-| 属性名 | 说明 | 类型 | 默认值 |
-|-----|----|----|-----|
-
-#### CracoLibsExamplePlugin
-
-| 属性名 | 说明 | 类型 | 默认值 |
-|-----|----|----|-----|
-
-#### env
-
-| 属性名 | 说明 | 类型 | 默认值 |
-|-----|----|----|-----|
-
-```js
-import createEntry from '@kne/modules-dev/dist/create-entry';
-
-const Entry = createEntry(children);
-```
-
-| 属性名 | 说明 | 类型 | 默认值 |
-|-----|----|----|-----|
-

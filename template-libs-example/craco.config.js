@@ -1,6 +1,8 @@
 const {CracoLibsExamplePlugin, env} = require('@kne/modules-dev');
 const aliasConfig = require('./webstorm.webpack.config');
 
+process.env.CI = false;
+
 module.exports = {
     webpack: {
         alias: aliasConfig.resolve.alias, configure: (webpackConfig) => {

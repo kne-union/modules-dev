@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",

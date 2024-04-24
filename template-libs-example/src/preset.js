@@ -4,15 +4,8 @@ import {Spin, Empty, message} from 'antd';
 import axios from 'axios';
 import {preset as remoteLoaderPreset} from '@kne/remote-loader';
 import omit from 'lodash/omit';
-import monacoLoader from '@monaco-editor/loader';
 
 window.PUBLIC_URL = process.env.PUBLIC_URL;
-
-monacoLoader.config({
-    paths: {
-        vs: 'https://registry.npmmirror.com/monaco-editor/0.48.0/files/min/vs'
-    }
-});
 
 const componentsCoreRemote = {
     remote: "components-core",

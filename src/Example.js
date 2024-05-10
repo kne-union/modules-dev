@@ -1,15 +1,17 @@
 import React from 'react';
-import {useParams, Navigate} from "react-router-dom";
+import {useParams, Navigate, useSearchParams} from "react-router-dom";
 import ExamplePage from './ExamplePage';
 import ensureSlash from '@kne/ensure-slash';
 import Fetch from '@kne/react-fetch';
 
 const Example = ({baseUrl, readme, pageProps}) => {
     const {id: current} = useParams();
+    const [searchParams] = useSearchParams();
+    const searchString = searchParams.size > 0 ? '?' + searchParams.toString() : '';
     const data = readme[current];
 
-    if (!readme[current]) {
-        return <Navigate to={`${ensureSlash(baseUrl, true)}${Object.keys(readme)[0]}`} replace/>
+    if (!(current && readme[current])) {
+        return <Navigate to={`${ensureSlash(baseUrl, true)}${Object.keys(readme)[0]}${searchString}`} replace/>
     }
 
     const renderExamplePage = ({data}) => <ExamplePage pageProps={pageProps} data={data} current={current}
@@ -17,7 +19,7 @@ const Example = ({baseUrl, readme, pageProps}) => {
                                                            return {
                                                                label: name,
                                                                key: name,
-                                                               path: `${ensureSlash(baseUrl, true)}` + name
+                                                               path: `${ensureSlash(baseUrl, true)}` + name + searchString
                                                            };
                                                        })}/>
 

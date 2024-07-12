@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.0.27",
+  "version": "2.0.28",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "source": "src/index.js",
@@ -31,7 +31,6 @@
   "author": "linzp",
   "license": "ISC",
   "dependencies": {
-    "@babel/helper-module-transforms": "7.24.5",
     "@kne/apply-template": "^0.1.1",
     "@kne/camel-case": "^0.1.1",
     "@kne/craco-module-federation": "^1.1.5",

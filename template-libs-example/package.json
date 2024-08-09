@@ -2,7 +2,7 @@
   "name": "@kne-components/<%=name%>",
   "version": "0.1.1",
   "dependencies": {
-    "@kne/current-lib": "file:..",
+    "@kne/current-lib_<%=name%>": "file:..",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom"
   },

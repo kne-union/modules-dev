@@ -14,7 +14,7 @@ module.exports = {
         plugin: CracoLibsExamplePlugin, options: {
             middleware: (moduleFederationConfig) => {
                 const shared = Object.assign({}, moduleFederationConfig.shared,{
-                    '@kne/current-lib': {
+                    '@kne/current-lib_<%=name%>': {
                         singleton: true, requiredVersion: false
                     }
                 });

@@ -3,6 +3,7 @@
   "version": "2.1.7",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
+    "access": "public",
     "source": "src/index.js",
     "main": "dist/create-entry.js"
   },

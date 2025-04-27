@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, Outlet} from 'react-router-dom';
+import {Navigate, Route, Routes, useLocation, useNavigate, Outlet} from 'react-router-dom';
 import {createWithRemoteLoader} from '@kne/remote-loader';
 import ensureSlash from '@kne/ensure-slash';
 import {Result, FloatButton} from 'antd';
@@ -41,71 +41,29 @@ const MainLayout = createWithRemoteLoader({
     }}><Outlet/></Layout></Global>;
 });
 
-const PostCat = createWithRemoteLoader({
-    modules: ["components-function:PostCat", "components-function:PostCat@defaultApis"]
-})((remoteModules, preset, projectName) => {
-    const [PostCat, defaultApis] = remoteModules;
-    useEffect(() => {
-        if (!preset.ajax) {
-            return;
-        }
-        preset.ajax.interceptors.request.use((config) => {
-            config.startTime = new Date();
-            return config;
-        });
-        preset.ajax.interceptors.response.use((response) => {
-            !/^\/node-api\//.test(response.config.url) && preset.ajax({
-                url: '/node-api/api-manager/history/add', method: 'POST', data: {
-                    url: response.config.url, props: {
-                        request: {
-                            method: response.config.method,
-                            headers: response.config.headers,
-                            data: response.config.data,
-                            params: response.config.params,
-                            baseUrl: response.config.baseURL
-                        }, response: {
-                            data: response.data,
-                            headers: response.headers,
-                            status: response.status,
-                            statusText: response.statusText
-                        }
-                    }, duration: (new Date()) - response.config.startTime, projectTag: projectName
-                }, showError: false
-            });
-            return response;
-        });
-    }, [preset.ajax]);
-    return <PostCat apis={defaultApis} tag={projectName}/>;
-});
-
-const ExampleRoutes = ({preset, themeToken, projectName, paths, readme, pageProps, children, ...props}) => {
-    const componentsPath = paths.find((item) => item.key === 'components');
-    const componentsBaseUrl = ensureSlash(get(componentsPath, 'path', '/'), true);
-    const postcatPath = paths.find((item) => item.key === 'postcat');
-    const postcatUrl = get(postcatPath, 'path', '/postcat');
-    return <Routes>
-        <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken} {...props}/>}>
-            {componentsPath &&
-                <Route path={componentsBaseUrl} element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
-                    <Route path=":id" element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
-                    <Route path=":id/*" element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
-                </Route>}
-            {postcatPath && <Route path={postcatUrl}
-                                   element={projectName ? <PostCat preset={preset} projectName={projectName}/> :
-                                       <Result status='404' title="请传入projectName以开启PostCat"/>}/>}
-        </Route>
-        <Route path='*' element={children}/>
-    </Routes>
-};
-
-ExampleRoutes.defaultProps = {
-    paths: [{
+const ExampleRoutes = ({
+                           preset, themeToken, projectName, paths = [{
         key: 'index', path: '/', title: '首页'
     }, {
         key: 'components', path: '/components', title: '组件'
     }, {
         key: 'postcat', path: '/postcat', title: '接口'
-    }]
+    }], readme, pageProps, children, ...props
+                       }) => {
+    const componentsPath = paths.find((item) => item.key === 'components');
+    const componentsBaseUrl = ensureSlash(get(componentsPath, 'path', '/'), true);
+    return <Routes>
+        <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken} {...props}/>}>
+            {componentsPath &&
+                <Route path={componentsBaseUrl} element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
+                    <Route path=":id"
+                           element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
+                    <Route path=":id/*"
+                           element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
+                </Route>}
+        </Route>
+        <Route path='*' element={children}/>
+    </Routes>
 };
 
 
@@ -123,9 +81,7 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
                                key: 'index', path: '/', title: '首页'
                            }, {
                                key: 'components', path: '/modules-dev-components', title: '组件'
-                           }, ...([projectName ? {
-                               key: 'postcat', path: '/modules-dev-postcat', title: '接口'
-                           } : []])]}
+                           }]}
                            themeToken={themeToken}>
                 <WrappedComponents {...props}/><EntryButton/>
             </ExampleRoutes> : <WrappedComponents {...props}/>}

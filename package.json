@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.1.7",
+  "version": "2.1.10",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -32,7 +32,6 @@
   "author": "linzp",
   "license": "ISC",
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@kne/apply-template": "^0.1.1",
     "@kne/camel-case": "^0.1.1",
     "@kne/craco-module-federation": "^1.1.5",

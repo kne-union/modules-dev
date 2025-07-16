@@ -42,12 +42,10 @@ const MainLayout = createWithRemoteLoader({
 });
 
 const ExampleRoutes = ({
-                           preset, themeToken, projectName, paths = [{
+                           preset, themeToken, projectName, baseUrl = '', paths = [{
         key: 'index', path: '/', title: '首页'
     }, {
-        key: 'components', path: '/components', title: '组件'
-    }, {
-        key: 'postcat', path: '/postcat', title: '接口'
+        key: 'components', path: `${baseUrl}/components`, title: '组件'
     }], readme, pageProps, children, ...props
                        }) => {
     const componentsPath = paths.find((item) => item.key === 'components');
@@ -67,7 +65,15 @@ const ExampleRoutes = ({
 };
 
 
-const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName, themeToken, pageProps, ...props}) => {
+const createEntry = (WrappedComponents) => (({
+                                                 remoteModules,
+                                                 preset,
+                                                 projectName,
+                                                 themeToken,
+                                                 pageProps,
+                                                 baseUrl = '',
+                                                 ...props
+                                             }) => {
     const [readme, setReadme] = useState({});
     useEffect(() => {
         import('readme').then((module) => {
@@ -76,11 +82,12 @@ const createEntry = (WrappedComponents) => (({remoteModules, preset, projectName
     }, []);
     return <>
         {Object.keys(readme).length > 0 ?
-            <ExampleRoutes preset={preset} projectName={projectName} readme={readme} pageProps={pageProps}
+            <ExampleRoutes preset={preset} baseUrl={baseUrl} projectName={projectName} readme={readme}
+                           pageProps={pageProps}
                            paths={[{
                                key: 'index', path: '/', title: '首页'
                            }, {
-                               key: 'components', path: '/modules-dev-components', title: '组件'
+                               key: 'components', path: `${baseUrl}/modules-dev-components`, title: '组件'
                            }]}
                            themeToken={themeToken}>
                 <WrappedComponents {...props}/><EntryButton/>

@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.1.16",
+  "version": "2.1.17",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",

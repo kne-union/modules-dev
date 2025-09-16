@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.1.15",
+  "version": "2.1.16",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -25,7 +25,7 @@
   "scripts": {
     "build:md": "create-md",
     "start:md": "create-md --watch",
-    "build:lib": "microbundle --no-compress --format modern,cjs --jsx React.createElement --jsxFragment React.Fragment",
+    "build:lib": "microbundle --no-compress --format modern,cjs --jsxImportSource react --jsx React.createElement --jsxFragment React.Fragment",
     "example": "node lib/init-libs-example.js"
   },
   "keywords": [],

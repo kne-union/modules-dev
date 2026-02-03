@@ -1,0 +1,61 @@
+{
+  "isFull": false,
+  "list": [
+    {
+      "title": "基础用法",
+      "description": "展示 createEntry 的基本使用方式，包装业务组件并集成开发环境功能",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_ModulesDev",
+          "packageName": "@kne/modules-dev",
+          "importStatement": "import * as _ModulesDev from \"@kne/modules-dev\""
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        },
+        {
+          "name": "antd",
+          "packageName": "antd"
+        }
+      ]
+    },
+    {
+      "title": "FontList 图标列表",
+      "description": "使用 FontList 组件展示和预览图标字体",
+      "code": "./fontlist.js",
+      "scope": [
+        {
+          "name": "_ModulesDev",
+          "packageName": "@kne/modules-dev",
+          "importStatement": "import * as _ModulesDev from \"@kne/modules-dev\""
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        },
+        {
+          "name": "antd",
+          "packageName": "antd"
+        }
+      ]
+    },
+    {
+      "title": "Highlight 代码高亮",
+      "description": "使用 Highlight 组件实现代码语法高亮显示",
+      "code": "./highlight.js",
+      "scope": [
+        {
+          "name": "_ModulesDev",
+          "packageName": "@kne/modules-dev",
+          "importStatement": "import * as _ModulesDev from \"@kne/modules-dev\""
+        },
+        {
+          "name": "antd",
+          "packageName": "antd"
+        }
+      ]
+    }
+  ]
+}

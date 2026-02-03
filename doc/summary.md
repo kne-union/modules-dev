@@ -1,16 +1,25 @@
-modules-dev为所有的项目提供了一个开发环境，让你在开发远程组件或者前端库时有一个运行时的示例展示，并且当对你的项目进行发布的时候可以集成到kne-union文档之中
+modules-dev 是一个强大的组件开发辅助工具，为你的远程组件或前端库项目提供完整的开发环境。无论是实时预览组件示例，还是生成可集成到文档系统的代码，modules-dev 都能轻松应对。
 
-modules-dev分为三个部分
+### 核心特性
 
-1. 构建工具部分，它在craco基础上封装了一系列插件用以支持文档解析已经远程组件支持
-2. Example部分，它给前端提供了一个集成化的开发环境用来实时预览组件的example部分
-3. 脚手架模板部分，它提供了两个命令行工具 modules-dev-create 和
-   modules-dev-libs-init，modules-dev-create可以在远程组件项目中添加一个新的组件即文档目录结构，modules-dev-libs-init可以给前端库提供一个可以运行的开发环境。
+- **零配置开箱即用**：基于 Craco 封装的构建插件，支持远程组件和组件库两种场景
+- **实时预览**：开发环境支持组件示例的实时预览，所见即所得
+- **文档自动生成**：自动解析 `doc/` 目录下的文档和示例代码
+- **命令行工具**：提供 `modules-dev-create` 和 `modules-dev-libs-init` 快速创建组件目录结构
+- **模块联邦支持**：内置 Webpack Module Federation 支持，方便远程组件开发
+- **灵活的路径配置**：通过环境变量自定义组件目录和别名
+
+### 应用场景
+
+1. **远程组件开发**：在开发远程组件时提供实时预览环境，组件发布后可集成到 kne-union 文档系统
+2. **组件库开发**：为前端组件库提供统一的示例展示和文档生成能力
+3. **业务项目调试**：在开发模式下集成示例预览，快速验证组件功能
 
 ### 构建工具使用
 
-1. 远程组件
-   craco.config.js
+#### 远程组件项目
+
+在项目的 `craco.config.js` 中配置 CracoRemoteComponentsPlugin：
 
 ```js
 const {CracoRemoteComponentsPlugin} = require("@kne/modules-dev");
@@ -22,9 +31,9 @@ module.exports = {
 };
 ```
 
-2. 组件库
+#### 组件库项目
 
-example/craco.config.js
+在示例目录的 `example/craco.config.js` 中配置 CracoLibsExamplePlugin：
 
 ```js
 const {CracoLibsExamplePlugin} = require("@kne/modules-dev");
@@ -36,13 +45,9 @@ module.exports = {
 };
 ```
 
-注意：以上代码通常由命令行工具生成，不需要自己编写
+### Example 组件使用
 
-### Example部分使用
-
-1. 远程组件库中
-
-src/App.js
+#### 远程组件库项目
 
 ```jsx
 import createEntry from "@kne/modules-dev/dist/create-entry";
@@ -66,9 +71,7 @@ const App = ({preset, themeToken, ...props}) => {
 };
 ```
 
-2. 业务项目中
-
-src/bootstrap.js
+#### 业务项目集成开发模式
 
 ```jsx
 if (process.env.NODE_ENV === 'development') {
@@ -86,4 +89,18 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-注意：以上代码通常由命令行工具生成，不需要自己编写
+### 命令行工具
+
+- `modules-dev-create`：在远程组件项目中创建新的组件目录结构和文档模板
+- `modules-dev-libs-init`：为前端库项目初始化示例开发环境
+
+### 环境变量配置
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| MODULES_DEV_BASE_DIR | 组件基础目录 | ./src/components |
+| MODULES_DEV_ALIAS_NAME | 组件别名 | @components |
+| MODULES_DEV_STATIC_BASE_URL | 静态资源基础路径 | /ui_components |
+| MODULES_DEV_PUBLIC_URL | 公共 URL | 自动生成 |
+| CURRENT_VERSION | 当前版本 | 从 package.json 读取 |
+| OPEN_CURRENT_VERSION | 是否在 URL 中显示版本号 | true |

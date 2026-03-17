@@ -5,7 +5,7 @@ import {Space} from "antd";
 import style from "./example.module.scss";
 import classnames from "classnames";
 import ExampleDriver from "@kne/example-driver";
-import {HashRouter} from "react-router-dom";
+import {MemoryRouter} from "react-router-dom";
 import {createWithRemoteLoader} from '@kne/remote-loader';
 import Highlight from './Highlight';
 
@@ -13,9 +13,9 @@ const ExampleDriverContext = createWithRemoteLoader({
     modules: ["components-core:Global@GlobalProvider"]
 })(({remoteModules, children, ...props}) => {
     const [GlobalProvider] = remoteModules;
-    return <HashRouter>
+    return <MemoryRouter>
         <GlobalProvider {...props}>{children}</GlobalProvider>
-    </HashRouter>
+    </MemoryRouter>
 });
 
 export const ExampleContent = createWithRemoteLoader({
@@ -64,8 +64,10 @@ export const ExampleContent = createWithRemoteLoader({
                                list={data.example.list}/>
             </div>
         </>}
-        <h2 className={style['part-title']}>API</h2>
-        <Highlight className="mark-down-html" html={data.api}/>
+        {data.api && <>
+            <h2 className={style['part-title']}>API</h2>
+            <Highlight className="mark-down-html" html={data.api}/>
+        </>}
     </Space>
 });
 

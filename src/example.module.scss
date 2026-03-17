@@ -1,7 +1,16 @@
 .main {
   :global(.mark-down-html) {
+    overflow-x: auto;
+    width: 100%;
+
+    :global(.table-content) {
+      overflow-x: auto;
+      width: 100%;
+    }
+
     table {
       width: 100%;
+      min-width: 600px;
       margin: 8px 0 16px;
       empty-cells: show;
       border: 1px solid #ebedf0;

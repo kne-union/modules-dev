@@ -28,6 +28,10 @@
     "build:lib": "microbundle --no-compress --format modern,cjs --jsxImportSource react --jsx React.createElement --jsxFragment React.Fragment",
     "example": "node lib/init-libs-example.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kne-union/modules-dev.git"
+  },
   "keywords": [],
   "author": "linzp",
   "license": "ISC",

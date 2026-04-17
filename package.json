@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -53,7 +53,6 @@
     "fs-extra": "^11.1.0",
     "highlight.js": "^11.7.0",
     "inquirer": "^8.2.4",
-    "loader-utils": "^3.3.1",
     "lodash": "^4.17.21",
     "sass": "^1.75.0",
     "webpack-virtual-modules": "^0.5.0"
@@ -63,6 +62,7 @@
     "@kne/react-scripts": ">=5",
     "@kne/remote-loader": "*",
     "antd": ">=5",
+    "loader-utils": "*",
     "react": ">=18",
     "react-router-dom": ">=6.4"
   },

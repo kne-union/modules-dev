@@ -1,36 +1,33 @@
 import '@kne/example-driver/dist/index.css';
-import React, {useEffect, useMemo} from "react";
-import get from "lodash/get";
-import {Space} from "antd";
-import style from "./example.module.scss";
-import classnames from "classnames";
-import ExampleDriver from "@kne/example-driver";
-import {MemoryRouter} from "react-router-dom";
+import React, {useEffect, useMemo} from 'react';
+import get from 'lodash/get';
+import {Space} from 'antd';
+import style from './example.module.scss';
+import classnames from 'classnames';
+import ExampleDriver from '@kne/example-driver';
 import {createWithRemoteLoader} from '@kne/remote-loader';
 import Highlight from './Highlight';
-
-const ExampleDriverContext = createWithRemoteLoader({
-    modules: ["components-core:Global@GlobalProvider"]
-})(({remoteModules, children, ...props}) => {
-    const [GlobalProvider] = remoteModules;
-    return <MemoryRouter>
-        <GlobalProvider {...props}>{children}</GlobalProvider>
-    </MemoryRouter>
-});
+import ExampleDriverContext from './ExampleDriverContext';
 
 export const ExampleContent = createWithRemoteLoader({
     modules: ["components-core:Global@useGlobalContext", "components-core:Global@usePreset"]
-})(({remoteModules, data}) => {
+})(({remoteModules, data, enableResponsiveProvider = false}) => {
     const [useGlobalContext, usePreset] = remoteModules;
     const {global: global} = useGlobalContext();
     const preset = usePreset();
 
     const exampleStyle = get(data, 'example.style');
     const DriverContext = useMemo(() => {
-        return ({children}) => <ExampleDriverContext {...global} preset={preset}>
-            {children}
-        </ExampleDriverContext>
-    }, [global]);
+        return ({children}) => (
+            <ExampleDriverContext
+                {...global}
+                preset={preset}
+                enableResponsiveProvider={enableResponsiveProvider}
+            >
+                {children}
+            </ExampleDriverContext>
+        );
+    }, [global, preset, enableResponsiveProvider]);
     useEffect(() => {
         if (!exampleStyle) {
             return;

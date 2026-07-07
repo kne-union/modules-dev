@@ -99,6 +99,15 @@ const Entry = createEntry(children);
 | 属性名 | 说明 | 类型 | 默认值 |
 |-----|----|----|-----|
 | data | 组件数据 | object | - |
+| enableResponsiveProvider | 是否在 contextComponent 外包一层 `@kne/responsive-utils` 的 `ResponsiveProvider` | boolean | `false`（`@kne/example-driver` ≥0.1.24 已在 LiveCode 内注入，默认无需开启） |
+
+```js
+import {ExampleDriverContext} from '@kne/modules-dev/dist/index';
+```
+
+### ExampleDriverContext
+
+示例 `contextComponent` 包装器（`GlobalProvider` + `MemoryRouter`）。可通过 `enableResponsiveProvider` 可选叠加 `ResponsiveProvider`。
 
 ```js
 import {FontList} from '@kne/modules-dev/dist/index';

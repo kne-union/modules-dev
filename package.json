@@ -43,7 +43,7 @@
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.22",
     "@kne/fetch-npm-package": "^0.1.4",
-    "@kne/md-doc": "^0.1.22",
+    "@kne/md-doc": "^0.1.23",
     "@kne/react-fetch": "^1.4.3",
     "@kne/react-icon": "^0.1.4",
     "ajv": "^8.18.0",

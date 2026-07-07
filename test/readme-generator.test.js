@@ -42,8 +42,8 @@ render(<span />);
 
     expect(parsed.example.list[0]).to.have.property('isFull', true);
     expect(parsed.example.list[1]).to.not.have.property('isFull');
-    expect(output).to.match(/title: `组织架构（Layout@TablePage 多页面）`[\s\S]*?isFull: true/);
-    const normalBlock = output.match(/title: `角色管理（基础 CRUD）`[\s\S]*?scope: \[/)[0];
+    expect(output).to.match(/title: "组织架构（Layout@TablePage 多页面）"[\s\S]*?isFull: true/);
+    const normalBlock = output.match(/title: "角色管理（基础 CRUD）"[\s\S]*?scope: \[/)[0];
     expect(normalBlock).to.not.include('isFull: true');
   });
 });

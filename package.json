@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.3.4",
+  "version": "2.3.6",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -26,7 +26,8 @@
     "build:md": "create-md",
     "start:md": "create-md --watch",
     "build:lib": "microbundle --no-compress --format modern,cjs --jsxImportSource react --jsx React.createElement --jsxFragment React.Fragment",
-    "example": "node lib/init-libs-example.js"
+    "example": "node lib/init-libs-example.js",
+    "test": "mocha test/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -36,13 +37,13 @@
   "author": "linzp",
   "license": "ISC",
   "dependencies": {
-    "@kne/apply-template": "^0.1.1",
+    "@kne/apply-template": "^1.0.1",
     "@kne/camel-case": "^0.1.1",
     "@kne/craco-module-federation": "^1.1.9",
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.11",
-    "@kne/fetch-npm-package": "^0.1.1",
-    "@kne/md-doc": "^0.1.13",
+    "@kne/fetch-npm-package": "^0.1.4",
+    "@kne/md-doc": "file:../md-doc",
     "@kne/react-fetch": "^1.4.3",
     "@kne/react-icon": "^0.1.4",
     "ajv": "^8.18.0",
@@ -80,6 +81,8 @@
   },
   "devDependencies": {
     "@kne/craco": "^7.1.2",
-    "@kne/microbundle": "^0.15.4"
+    "@kne/microbundle": "^0.15.4",
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -43,7 +43,7 @@
     "@kne/ensure-slash": "^0.1.0",
     "@kne/example-driver": "^0.1.11",
     "@kne/fetch-npm-package": "^0.1.4",
-    "@kne/md-doc": "file:../md-doc",
+    "@kne/md-doc": "^0.1.21",
     "@kne/react-fetch": "^1.4.3",
     "@kne/react-icon": "^0.1.4",
     "ajv": "^8.18.0",

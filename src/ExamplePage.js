@@ -61,6 +61,7 @@ export const ExampleContent = createWithRemoteLoader({
             <h2 className={style['part-title']}>代码示例</h2>
             <div className={classnames(style['example'], data.example.className)}>
                 <ExampleDriver contextComponent={DriverContext} isFull={data.example.isFull}
+                               devicePreview={data.example.devicePreview}
                                list={data.example.list}/>
             </div>
         </>}

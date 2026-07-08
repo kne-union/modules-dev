@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -25,7 +25,7 @@
   "scripts": {
     "build:md": "create-md",
     "start:md": "create-md --watch",
-    "build:lib": "microbundle --no-compress --format modern,cjs --jsxImportSource react --jsx React.createElement --jsxFragment React.Fragment --external react,react-dom,react-router-dom,@kne/remote-loader,@kne/example-driver,@kne/apply-template,@kne/camel-case,@kne/craco-module-federation,@kne/ensure-slash,@kne/fetch-npm-package,@kne/md-doc,@kne/react-fetch,@kne/react-icon,ajv,chokidar,classnames,commander,cross-spawn-promise,fs-extra,highlight.js,inquirer,lodash,sass,webpack-virtual-modules,antd,loader-utils,@kne/craco,@kne/react-scripts",
+    "build:lib": "microbundle --no-compress --format modern,cjs --jsxImportSource react --jsx React.createElement --jsxFragment React.Fragment",
     "example": "node lib/init-libs-example.js",
     "test": "mocha test/**/*.test.js"
   },
@@ -41,12 +41,11 @@
     "@kne/camel-case": "^0.1.1",
     "@kne/craco-module-federation": "^1.1.9",
     "@kne/ensure-slash": "^0.1.0",
-    "@kne/example-driver": "^0.1.26",
+    "@kne/example-driver": "^0.1.28",
     "@kne/fetch-npm-package": "^0.1.4",
     "@kne/md-doc": "^0.1.23",
     "@kne/react-fetch": "^1.4.3",
     "@kne/react-icon": "^0.1.4",
-    "@kne/responsive-utils": "^0.1.3",
     "ajv": "^8.18.0",
     "chokidar": "^3.5.3",
     "classnames": "^2.3.2",

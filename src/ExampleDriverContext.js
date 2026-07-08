@@ -1,26 +1,17 @@
 import React from 'react';
 import {MemoryRouter} from 'react-router-dom';
-import {ResponsiveProvider} from '@kne/responsive-utils';
 import {createWithRemoteLoader} from '@kne/remote-loader';
 
-/**
- * ExampleDriver contextComponent wrapper (GlobalProvider + router).
- * `enableResponsiveProvider` defaults to false — @kne/example-driver LiveCode
- * injects ResponsiveProvider with device-preview container mode since 0.1.24+.
- */
+/** ExampleDriver contextComponent wrapper (GlobalProvider + router). ResponsiveProvider is injected by @kne/example-driver LiveCode. */
 const ExampleDriverContext = createWithRemoteLoader({
     modules: ['components-core:Global@GlobalProvider']
-})(({remoteModules, children, enableResponsiveProvider = false, ...props}) => {
+})(({remoteModules, children, ...props}) => {
     const [GlobalProvider] = remoteModules;
-    const tree = (
+    return (
         <MemoryRouter>
             <GlobalProvider {...props}>{children}</GlobalProvider>
         </MemoryRouter>
     );
-    if (enableResponsiveProvider) {
-        return <ResponsiveProvider>{tree}</ResponsiveProvider>;
-    }
-    return tree;
 });
 
 export default ExampleDriverContext;

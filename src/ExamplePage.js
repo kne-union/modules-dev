@@ -11,7 +11,7 @@ import ExampleDriverContext from './ExampleDriverContext';
 
 export const ExampleContent = createWithRemoteLoader({
     modules: ["components-core:Global@useGlobalContext", "components-core:Global@usePreset"]
-})(({remoteModules, data, enableResponsiveProvider = false}) => {
+})(({remoteModules, data}) => {
     const [useGlobalContext, usePreset] = remoteModules;
     const {global: global} = useGlobalContext();
     const preset = usePreset();
@@ -19,15 +19,11 @@ export const ExampleContent = createWithRemoteLoader({
     const exampleStyle = get(data, 'example.style');
     const DriverContext = useMemo(() => {
         return ({children}) => (
-            <ExampleDriverContext
-                {...global}
-                preset={preset}
-                enableResponsiveProvider={enableResponsiveProvider}
-            >
+            <ExampleDriverContext {...global} preset={preset}>
                 {children}
             </ExampleDriverContext>
         );
-    }, [global, preset, enableResponsiveProvider]);
+    }, [global, preset]);
     useEffect(() => {
         if (!exampleStyle) {
             return;

@@ -6,6 +6,7 @@ import style from './example.module.scss';
 import classnames from 'classnames';
 import ExampleDriver from '@kne/example-driver';
 import {createWithRemoteLoader} from '@kne/remote-loader';
+import camelCase from '@kne/camel-case';
 import Highlight from './Highlight';
 import ExampleDriverContext from './ExampleDriverContext';
 
@@ -69,7 +70,7 @@ const ExamplePage = createWithRemoteLoader({
     modules: ["components-core:Layout@Page", "components-core:Layout@Menu", "components-core:Global@useGlobalContext"]
 })(({remoteModules, data, current, menuProps = {}, items, pageProps = {}}) => {
     const [Page, Menu] = remoteModules;
-    return <Page title={data.name} className={style['example-page']}
+    return <Page title={camelCase(data.name || '')} className={style['example-page']}
                  menu={items && items.length > 0 &&
                      <Menu {...menuProps} currentKey={current} items={items}/>} {...pageProps}>
         <ExampleContent data={data}/>

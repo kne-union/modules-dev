@@ -1,8 +1,27 @@
-import React from 'react';
+import React, {useLayoutEffect} from 'react';
 import {useParams, Navigate, useSearchParams} from "react-router-dom";
 import ExamplePage from './ExamplePage';
 import ensureSlash from '@kne/ensure-slash';
 import Fetch from '@kne/react-fetch';
+import {createWithRemoteLoader} from '@kne/remote-loader';
+
+const ScrollToTop = createWithRemoteLoader({
+    modules: ['components-core:Global@useScrollElement']
+})(({remoteModules, watch}) => {
+    const [useScrollElement] = remoteModules;
+    const getScrollElement = useScrollElement();
+
+    useLayoutEffect(() => {
+        const scrollEl = getScrollElement();
+        if (scrollEl) {
+            scrollEl.scrollTo(0, 0);
+        }
+        // body 上存在 overflow: auto !important 时，实际滚动可能在 document
+        window.scrollTo(0, 0);
+    }, [watch, getScrollElement]);
+
+    return null;
+});
 
 const Example = ({baseUrl, readme, pageProps}) => {
     const {id: current} = useParams();
@@ -23,11 +42,12 @@ const Example = ({baseUrl, readme, pageProps}) => {
                                                            };
                                                        })}/>
 
-    if (data && data.hasOwnProperty('loader') || data.hasOwnProperty('url')) {
-        return <Fetch {...Object.assign({}, data)} render={renderExamplePage}/>
-    }
-
-    return renderExamplePage({data});
+    return <>
+        <ScrollToTop watch={current} remoteFallback={null}/>
+        {(data && data.hasOwnProperty('loader') || data.hasOwnProperty('url')) ?
+            <Fetch {...Object.assign({}, data)} render={renderExamplePage}/> :
+            renderExamplePage({data})}
+    </>;
 };
 
 export default Example;

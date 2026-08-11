@@ -130,3 +130,6 @@ build
 pnpm-lock.yaml
 package-lock.json
 example
+
+prompts
+graphify-out

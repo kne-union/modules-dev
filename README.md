@@ -1,11 +1,8 @@
-
 # modules-dev
-
 
 ### 描述
 
 用于辅助在项目内启动一个规范化组件开发的环境
-
 
 ### 安装
 
@@ -13,29 +10,28 @@
 npm i --save @kne/modules-dev
 ```
 
-
 ### 概述
 
 modules-dev 是一个强大的组件开发辅助工具，为你的远程组件或前端库项目提供完整的开发环境。无论是实时预览组件示例，还是生成可集成到文档系统的代码，modules-dev 都能轻松应对。
 
-### 核心特性
+#### 核心特性
 
 - **零配置开箱即用**：基于 Craco 封装的构建插件，支持远程组件和组件库两种场景
 - **实时预览**：开发环境支持组件示例的实时预览，所见即所得
-- **文档自动生成**：自动解析 `doc/` 目录下的文档和示例代码
+- **文档自动生成**：解析各组件 `doc/`，生成组件 README，并写入项目根 `docs/{PascalName}.md`；根 README 的 DOC_MD 段仅保留名称、简介与相对链接（GitHub 可点）
 - **命令行工具**：提供 `modules-dev-create` 和 `modules-dev-libs-init` 快速创建组件目录结构
 - **模块联邦支持**：内置 Webpack Module Federation 支持，方便远程组件开发
 - **灵活的路径配置**：通过环境变量自定义组件目录和别名
 
-### 应用场景
+#### 应用场景
 
 1. **远程组件开发**：在开发远程组件时提供实时预览环境，组件发布后可集成到 kne-union 文档系统
 2. **组件库开发**：为前端组件库提供统一的示例展示和文档生成能力
 3. **业务项目调试**：在开发模式下集成示例预览，快速验证组件功能
 
-### 构建工具使用
+#### 构建工具使用
 
-#### 远程组件项目
+##### 远程组件项目
 
 在项目的 `craco.config.js` 中配置 CracoRemoteComponentsPlugin：
 
@@ -49,7 +45,7 @@ module.exports = {
 };
 ```
 
-#### 组件库项目
+##### 组件库项目
 
 在示例目录的 `example/craco.config.js` 中配置 CracoLibsExamplePlugin：
 
@@ -63,9 +59,9 @@ module.exports = {
 };
 ```
 
-### Example 组件使用
+#### Example 组件使用
 
-#### 远程组件库项目
+##### 远程组件库项目
 
 ```jsx
 import createEntry from "@kne/modules-dev/dist/create-entry";
@@ -89,7 +85,7 @@ const App = ({preset, themeToken, ...props}) => {
 };
 ```
 
-#### 业务项目集成开发模式
+##### 业务项目集成开发模式
 
 ```jsx
 if (process.env.NODE_ENV === 'development') {
@@ -107,12 +103,12 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-### 命令行工具
+#### 命令行工具
 
 - `modules-dev-create`：在远程组件项目中创建新的组件目录结构和文档模板
 - `modules-dev-libs-init`：为前端库项目初始化示例开发环境
 
-### 环境变量配置
+#### 环境变量配置
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
@@ -294,7 +290,7 @@ const { Highlight } = _ModulesDev;
 const { Space, Typography, Card, Input } = antd;
 const { useState } = React;
 
-const codeTemplate = `import React from 'react';
+const codeTemplate = &#96;import React from 'react';
 
 function App() {
   return (
@@ -305,7 +301,7 @@ function App() {
   );
 }
 
-export default App;`;
+export default App;&#96;;
 
 const HighlightExample = () => {
   const [code, setCode] = useState(codeTemplate);
@@ -325,7 +321,7 @@ const HighlightExample = () => {
         />
       </Card>
       <Card title="高亮效果">
-        <Highlight html={`<pre><code class="language-javascript hljs">${escapeHtml(code)}</code></pre>`} />
+        <Highlight html={&#96;<pre><code class="language-javascript hljs">${escapeHtml(code)}</code></pre>&#96;} />
       </Card>
     </Space>
   );
@@ -344,14 +340,13 @@ render(<HighlightExample />);
 
 ```
 
-
 ### API
 
 ```js
 const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne/modules-dev');
 ```
 
-### CracoRemoteComponentsPlugin
+#### CracoRemoteComponentsPlugin
 
 用于远程组件项目的 Craco 插件，自动配置文档解析、模块联邦和 CSS Modules 支持。
 
@@ -359,7 +354,7 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne
 |-----|----|----|-----|
 | middleware | 中间件配置 | object | undefined |
 
-### CracoLibsExamplePlugin
+#### CracoLibsExamplePlugin
 
 用于组件库示例项目的 Craco 插件，自动配置文档解析、版本管理和模块联邦支持。
 
@@ -367,7 +362,7 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne
 |-----|----|----|-----|
 | middleware | 中间件配置 | object | undefined |
 
-### env
+#### env
 
 环境变量配置对象，提供项目构建所需的各种路径和配置信息。
 
@@ -386,13 +381,30 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne
 | componentsVersion | 组件版本号 | string |
 | publicUrl | 公共 URL | string |
 
+#### buildComponentDocs
+
+生成各组件 README，并将完整文档写入项目根 `docs/{PascalName}.md`（文件名强制大驼峰，如 `button-group` → `ButtonGroup.md`）；根 README 的 `<!--START_SECTION:DOC_MD-->` 段只写入组件目录表（名称 + 简介 + 相对链接）。production 构建时另生成**完整聚合** `build/README.md`（含全部组件文档，与根目录 README 无关）；`docs/` 不进入 `build/`。
+
+| 属性名 | 说明 | 类型 | 默认值 |
+|-----|----|----|-----|
+| moduleBaseDir | 组件目录 | string | `env.moduleBaseDir` |
+| rootReadme | 根 README 路径 | string | `{appDir}/README.md` |
+| docsDir | 文档输出目录 | string | `{appDir}/docs`（libs-example 为 `../docs`） |
+| getModuleList | 自定义模块列表加载 | function | 内置 `getModuleList` |
+
+```js
+const { buildComponentDocs } = require('@kne/modules-dev');
+await buildComponentDocs();
+// 或 CLI：modules-dev-build-docs / npm run build:docs
+```
+
 ```js
 import createEntry from '@kne/modules-dev/dist/create-entry';
 
 const Entry = createEntry(children);
 ```
 
-### createEntry
+#### createEntry
 
 高阶组件工厂函数，用于包装业务组件，集成开发环境的文档预览功能。
 
@@ -405,7 +417,7 @@ const Entry = createEntry(children);
 | pageProps | 页面属性 | object | - |
 | baseUrl | 基础路径 | string | '' |
 
-### createEntry.ExampleRoutes
+#### createEntry.ExampleRoutes
 
 示例路由组件，用于渲染组件示例页面。
 
@@ -420,7 +432,7 @@ const Entry = createEntry(children);
 | pageProps | 页面属性 | object | - |
 | children | 子路由内容 | ReactNode | - |
 
-### createEntry.Example
+#### createEntry.Example
 
 单个组件示例展示组件。
 
@@ -430,7 +442,7 @@ const Entry = createEntry(children);
 | readme | 组件 README 数据 | object | - |
 | pageProps | 页面属性 | object | - |
 
-### createEntry.ExamplePage
+#### createEntry.ExamplePage
 
 示例页面组件，用于展示组件文档和代码示例。
 
@@ -441,7 +453,7 @@ const Entry = createEntry(children);
 | items | 组件列表 | array | - |
 | pageProps | 页面属性 | object | - |
 
-### createEntry.ExampleContent
+#### createEntry.ExampleContent
 
 示例内容组件，渲染组件的描述、概述、代码示例和 API 文档。
 
@@ -450,10 +462,18 @@ const Entry = createEntry(children);
 | data | 组件数据 | object | - |
 
 ```js
+import {ExampleDriverContext} from '@kne/modules-dev/dist/index';
+```
+
+#### ExampleDriverContext
+
+示例 `contextComponent` 包装器（`GlobalProvider` + `MemoryRouter`）。响应式上下文由 `@kne/example-driver` LiveCode 内注入，无需在此层再包 `ResponsiveProvider`。
+
+```js
 import {FontList} from '@kne/modules-dev/dist/index';
 ```
 
-### FontList
+#### FontList
 
 图标字体列表展示组件，用于预览和复制图标代码。
 
@@ -465,7 +485,7 @@ import {FontList} from '@kne/modules-dev/dist/index';
 import {Example} from '@kne/modules-dev/dist/index';
 ```
 
-### Example
+#### Example
 
 组件示例展示组件（别名，同 createEntry.Example）。
 
@@ -479,7 +499,7 @@ import {Example} from '@kne/modules-dev/dist/index';
 import {ExamplePage} from '@kne/modules-dev/dist/index';
 ```
 
-### ExamplePage
+#### ExamplePage
 
 示例页面组件（别名，同 createEntry.ExamplePage）。
 
@@ -489,4 +509,3 @@ import {ExamplePage} from '@kne/modules-dev/dist/index';
 | current | 当前组件 ID | string | - |
 | items | 组件列表 | array | - |
 | pageProps | 页面属性 | object | - |
-

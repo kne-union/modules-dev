@@ -37,6 +37,23 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne
 | componentsVersion | 组件版本号 | string |
 | publicUrl | 公共 URL | string |
 
+### buildComponentDocs
+
+生成各组件 README，并将完整文档写入项目根 `docs/{PascalName}.md`（文件名强制大驼峰，如 `button-group` → `ButtonGroup.md`）；根 README 的 `<!--START_SECTION:DOC_MD-->` 段只写入组件目录表（名称 + 简介 + 相对链接）。production 构建时另生成**完整聚合** `build/README.md`（含全部组件文档，与根目录 README 无关）；`docs/` 不进入 `build/`。
+
+| 属性名 | 说明 | 类型 | 默认值 |
+|-----|----|----|-----|
+| moduleBaseDir | 组件目录 | string | `env.moduleBaseDir` |
+| rootReadme | 根 README 路径 | string | `{appDir}/README.md` |
+| docsDir | 文档输出目录 | string | `{appDir}/docs`（libs-example 为 `../docs`） |
+| getModuleList | 自定义模块列表加载 | function | 内置 `getModuleList` |
+
+```js
+const { buildComponentDocs } = require('@kne/modules-dev');
+await buildComponentDocs();
+// 或 CLI：modules-dev-build-docs / npm run build:docs
+```
+
 ```js
 import createEntry from '@kne/modules-dev/dist/create-entry';
 

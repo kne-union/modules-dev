@@ -67,17 +67,9 @@ export const ExampleContent = createWithRemoteLoader({
 });
 
 const ExamplePage = createWithRemoteLoader({
-    modules: ["components-core:Layout@Page", "components-core:Layout@Menu", "components-core:Global@useGlobalContext", "components-core:Common@getScrollEl"]
+    modules: ["components-core:Layout@Page", "components-core:Layout@Menu", "components-core:Global@useGlobalContext"]
 })(({remoteModules, data, current, menuProps = {}, items, pageProps = {}}) => {
-    const [Page, Menu, , getScrollEl] = remoteModules;
-
-    useEffect(() => {
-        const scrollEl = getScrollEl();
-        if (scrollEl) {
-            scrollEl.scrollTop = 0;
-        }
-    }, [current, getScrollEl]);
-
+    const [Page, Menu] = remoteModules;
     return <Page title={camelCase(data.name || '')} className={style['example-page']}
                  menu={items && items.length > 0 &&
                      <Menu {...menuProps} currentKey={current} items={items}/>} {...pageProps}>

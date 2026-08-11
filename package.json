@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -13,7 +13,16 @@
   "main": "index.js",
   "bin": {
     "modules-dev-create": "lib/init-module.js",
-    "modules-dev-libs-init": "lib/init-libs-example.js"
+    "modules-dev-libs-init": "lib/init-libs-example.js",
+    "modules-dev-build-docs": "lib/build-component-docs.js"
+  },
+  "scripts": {
+    "build:md": "create-md",
+    "start:md": "create-md --watch",
+    "build:lib": "microbundle --no-compress --format modern,cjs --jsxImportSource react --jsx React.createElement --jsxFragment React.Fragment",
+    "build:docs": "node lib/build-component-docs.js",
+    "example": "node lib/init-libs-example.js",
+    "test": "mocha test/**/*.test.js"
   },
   "files": [
     "dist",
@@ -22,13 +31,6 @@
     "template-libs-example",
     "index.js"
   ],
-  "scripts": {
-    "build:md": "create-md",
-    "start:md": "create-md --watch",
-    "build:lib": "microbundle --no-compress --format modern,cjs --jsxImportSource react --jsx React.createElement --jsxFragment React.Fragment",
-    "example": "node lib/init-libs-example.js",
-    "test": "mocha test/**/*.test.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kne-union/modules-dev.git"

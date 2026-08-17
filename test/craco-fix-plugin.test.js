@@ -5,8 +5,7 @@ const env = require('../lib/env');
 const createConfig = (concatenateModules = true) => ({
   plugins: [],
   optimization: { concatenateModules },
-  resolve: { alias: {}, plugins: [] },
-  cache: { type: 'filesystem', cacheDirectory: '/tmp/app-webpack-cache' }
+  resolve: { alias: {}, plugins: [] }
 });
 
 describe('craco-fix-plugin concatenateModules', () => {

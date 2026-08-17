@@ -348,7 +348,7 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne
 
 #### CracoRemoteComponentsPlugin
 
-用于远程组件项目的 Craco 插件，自动配置文档解析、模块联邦和 CSS Modules 支持。
+用于远程组件项目的 Craco 插件，自动配置文档解析、模块联邦和 CSS Modules 支持。生产构建会关闭 webpack `concatenateModules`（scope hoisting），避免 Module Federation 与 ESM babel helpers / locale 拼进同一作用域时出现 `Cannot access ... before initialization`。开发态 `start` 不受影响。
 
 | 属性名 | 说明 | 类型 | 默认值 |
 |-----|----|----|-----|

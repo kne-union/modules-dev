@@ -1,10 +1,12 @@
 const { expect } = require('chai');
 const plugin = require('../lib/craco-fix-plugin');
+const env = require('../lib/env');
 
 const createConfig = (concatenateModules = true) => ({
   plugins: [],
   optimization: { concatenateModules },
-  resolve: {}
+  resolve: { alias: {}, plugins: [] },
+  cache: { type: 'filesystem', cacheDirectory: '/tmp/app-webpack-cache' }
 });
 
 describe('craco-fix-plugin concatenateModules', () => {
@@ -20,3 +22,12 @@ describe('craco-fix-plugin concatenateModules', () => {
     expect(webpackConfig.optimization.concatenateModules).to.equal(true);
   });
 });
+
+describe('craco-fix-plugin readme alias', () => {
+  it('应将 readme 别名到 .modules-dev/readme', () => {
+    const webpackConfig = createConfig(true);
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'development' } });
+    expect(webpackConfig.resolve.alias.readme).to.equal(env.readmeDir);
+  });
+});
+

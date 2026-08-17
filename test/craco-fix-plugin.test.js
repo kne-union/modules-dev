@@ -30,3 +30,14 @@ describe('craco-fix-plugin readme alias', () => {
   });
 });
 
+describe('craco-fix-plugin webpack cache', () => {
+  it('node_modules 非软链时不改 cacheDirectory', () => {
+    const webpackConfig = createConfig(true);
+    webpackConfig.cache = { type: 'filesystem', cacheDirectory: '/tmp/app-webpack-cache' };
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'development' } });
+    if (!env.isNodeModulesSymlink) {
+      expect(webpackConfig.cache.cacheDirectory).to.equal('/tmp/app-webpack-cache');
+    }
+  });
+});
+

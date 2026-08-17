@@ -23,10 +23,21 @@ describe('craco-fix-plugin concatenateModules', () => {
 });
 
 describe('craco-fix-plugin readme alias', () => {
-  it('应将 readme 别名到 .modules-dev/readme', () => {
+  it('应将 readme 别名到 node_modules/.modules-dev/readme', () => {
     const webpackConfig = createConfig(true);
     plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'development' } });
     expect(webpackConfig.resolve.alias.readme).to.equal(env.readmeDir);
+  });
+
+  it('应把 readme 目录加入 ModuleScopePlugin allowedPaths', () => {
+    const webpackConfig = createConfig(true);
+    webpackConfig.resolve.plugins = [{
+      constructor: { name: 'ModuleScopePlugin' },
+      allowedFiles: new Set(),
+      allowedPaths: []
+    }];
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'development' } });
+    expect(webpackConfig.resolve.plugins[0].allowedPaths).to.include(env.readmeDir);
   });
 });
 

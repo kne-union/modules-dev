@@ -343,7 +343,7 @@ render(<HighlightExample />);
 ### API
 
 ```js
-const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne/modules-dev');
+const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, CracoIsolateCopiedWebpackCachePlugin, env} = require('@kne/modules-dev');
 ```
 
 #### CracoRemoteComponentsPlugin
@@ -353,6 +353,10 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne
 | 属性名 | 说明 | 类型 | 默认值 |
 |-----|----|----|-----|
 | middleware | 中间件配置 | object | undefined |
+
+#### CracoIsolateCopiedWebpackCachePlugin
+
+将 webpack filesystem cache 的 `name` / `version` 绑定到当前 `appDir`，避免 workplace 拷贝原仓 `.cache` 后复用带原仓绝对路径的 pack（会去编译原仓 `src`，报 JSX preset 未开启）。`CracoRemoteComponentsPlugin` / `CracoLibsExamplePlugin` 已默认启用，一般不必再手动加。
 
 #### CracoLibsExamplePlugin
 

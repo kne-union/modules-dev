@@ -42,6 +42,44 @@ describe('craco-fix-plugin readme alias', () => {
   });
 });
 
+describe('craco-fix-plugin ESM node_modules', () => {
+  it('应为 node_modules 的 .mjs 加上 javascript/auto 且 fullySpecified: false', () => {
+    const webpackConfig = createConfig(true);
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'production' } });
+    const rule = webpackConfig.module.rules.find(
+      (item) => item && item.type === 'javascript/auto' && String(item.test) === String(/\.mjs$/)
+    );
+    expect(rule).to.exist;
+    expect(rule.include).to.deep.equal(/node_modules/);
+    expect(rule.resolve).to.deep.equal({ fullySpecified: false });
+  });
+
+  it('重复 override 不应重复添加 .mjs 规则', () => {
+    const webpackConfig = createConfig(true);
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'production' } });
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'production' } });
+    const rules = webpackConfig.module.rules.filter(
+      (item) => item && item.type === 'javascript/auto' && String(item.test) === String(/\.mjs$/)
+    );
+    expect(rules).to.have.length(1);
+  });
+
+  it('resolve.conditionNames 应优先 import/module', () => {
+    const webpackConfig = createConfig(true);
+    webpackConfig.resolve.conditionNames = ['require', 'browser'];
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'production' } });
+    expect(webpackConfig.resolve.conditionNames).to.deep.equal(['import', 'module', '...']);
+  });
+
+  it('已是 import/module/... 时不改写 conditionNames', () => {
+    const webpackConfig = createConfig(true);
+    const preferred = ['import', 'module', '...'];
+    webpackConfig.resolve.conditionNames = preferred;
+    plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'production' } });
+    expect(webpackConfig.resolve.conditionNames).to.equal(preferred);
+  });
+});
+
 describe('craco-fix-plugin app cache isolation', () => {
   it('应将 webpack filesystem cache 指到项目 .cache/webpack', () => {
     const webpackConfig = createConfig(true);
@@ -65,7 +103,8 @@ describe('craco-fix-plugin app cache isolation', () => {
       ]
     };
     plugin.overrideWebpackConfig({ webpackConfig, context: { env: 'development' } });
-    expect(webpackConfig.module.rules[0].oneOf[0].options.cacheDirectory).to.equal(
+    const babelRule = webpackConfig.module.rules.find((item) => item && item.oneOf);
+    expect(babelRule.oneOf[0].options.cacheDirectory).to.equal(
       path.resolve(env.appDir, '.cache/babel-loader')
     );
   });

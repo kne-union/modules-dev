@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.4.14",
+  "version": "2.4.15",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -57,8 +57,7 @@
     "highlight.js": "^11.7.0",
     "inquirer": "^8.2.4",
     "lodash": "^4.17.21",
-    "sass": "^1.75.0",
-    "webpack-virtual-modules": "^0.5.0"
+    "sass": "^1.75.0"
   },
   "peerDependencies": {
     "@kne/craco": ">=7.0.0",

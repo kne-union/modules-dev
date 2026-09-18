@@ -34,10 +34,10 @@ const EntryButton = createWithRemoteLoader({
 
 const MainLayout = createWithRemoteLoader({
     modules: ["components-core:Global", "components-core:Layout"]
-})(({remoteModules, paths, preset, ...props}) => {
+})(({remoteModules, paths, preset, navigation, ...props}) => {
     const [Global, Layout] = remoteModules;
     return <Global {...props} preset={preset}><Layout navigation={{
-        showIndex: false, list: paths
+        showIndex: false, list: paths, ...navigation
     }}><Outlet/></Layout></Global>;
 });
 

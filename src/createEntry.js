@@ -51,9 +51,12 @@ const ExampleRoutes = ({
     const componentsPath = paths.find((item) => item.key === 'components');
     const componentsBaseUrl = ensureSlash(get(componentsPath, 'path', '/'), true);
     const baseUrlPrefix = new RegExp(`^${ensureSlash(baseUrl,true)}`);
-    const componentsRoutePath = ensureSlash(componentsBaseUrl.replace(baseUrlPrefix, ''));
+    const toRoutePath = (path) => ensureSlash(ensureSlash(path, true).replace(baseUrlPrefix, ''));
+    const componentsRoutePath = toRoutePath(componentsBaseUrl);
+    const pagePaths = paths.filter((item) => item.key !== 'components' && item.element);
     return <Routes>
-        <Route element={<MainLayout paths={paths} preset={preset} themeToken={themeToken} {...props}/>}>
+        <Route element={<MainLayout paths={paths.map(({element, ...item}) => item)} preset={preset}
+                                    themeToken={themeToken} {...props}/>}>
             {componentsPath && <Route path={componentsRoutePath}
                                       element={<ModulesIsEmpty baseUrl={componentsBaseUrl} readme={readme}/>}>
                 <Route path=":id"
@@ -61,13 +64,15 @@ const ExampleRoutes = ({
                 <Route path=":id/*"
                        element={<Example baseUrl={componentsBaseUrl} readme={readme} pageProps={pageProps}/>}/>
             </Route>}
+            {pagePaths.map((item) => <Route key={item.key} path={`${toRoutePath(item.path)}/*`}
+                                            element={item.element}/>)}
         </Route>
         <Route path='*' element={children}/>
     </Routes>
 };
 
 
-const createEntry = (WrappedComponents) => (({
+const createEntry = (WrappedComponents, options = {}) => (({
                                                  remoteModules,
                                                  preset,
                                                  projectName,
@@ -90,7 +95,9 @@ const createEntry = (WrappedComponents) => (({
                                key: 'index', path: '/', title: '首页'
                            }, {
                                key: 'components', path: `${baseUrl}/modules-dev-components`, title: '组件'
-                           }]}
+                           }, ...(options.paths || []).map(({component: Component, path, ...item}) => Object.assign({}, item, {
+                               path: `${baseUrl}${path}`
+                           }, Component ? {element: <Component {...props}/>} : null))]}
                            themeToken={themeToken}>
                 <WrappedComponents {...props}/><EntryButton/>
             </ExampleRoutes> : <WrappedComponents {...props}/>}

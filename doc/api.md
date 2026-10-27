@@ -73,6 +73,21 @@ const Entry = createEntry(children);
 | pageProps | 页面属性 | object | - |
 | baseUrl | 基础路径 | string | '' |
 
+`createEntry(WrappedComponents, options)` 的第二个参数：
+
+| 属性名 | 说明 | 类型 | 默认值 |
+|-----|----|----|-----|
+| paths | 追加到「首页」「组件」之后的导航项 `[{ key, path, title, component }]`；`path` 相对 baseUrl（如 `/modules-dev-apis`），`component` 作为该路径的页面渲染，接收与业务组件相同的 props | array | [] |
+
+```js
+// bootstrap.js 开发分支：给开发导航加一个页面
+import('@kne/modules-dev/dist/create-entry.modern').then(module => {
+  const Entry = module.default(App, {
+    paths: [{ key: 'apis', path: '/modules-dev-apis', title: '接口', component: ApiDoc }]
+  });
+});
+```
+
 ### createEntry.ExampleRoutes
 
 示例路由组件，用于渲染组件示例页面。
@@ -80,7 +95,7 @@ const Entry = createEntry(children);
 | 属性名 | 说明 | 类型 | 默认值 |
 |-----|----|----|-----|
 | readme | 组件 README 数据 | object | - |
-| paths | 路径配置列表 | array | - |
+| paths | 路径配置列表 `[{ key, path, title, element }]`；`key` 为 `components` 的项挂组件示例，其余带 `element` 的项在该路径下渲染 `element` | array | - |
 | preset | 全局预设配置 | object | - |
 | themeToken | 主题配置 | object | - |
 | baseUrl | 基础路径 | string | '' |

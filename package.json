@@ -1,6 +1,6 @@
 {
   "name": "@kne/modules-dev",
-  "version": "2.4.19",
+  "version": "2.4.20",
   "description": "用于辅助在项目内启动一个规范化组件开发的环境",
   "publishConfig": {
     "access": "public",
@@ -49,6 +49,7 @@
     "@kne/react-fetch": "^1.4.3",
     "@kne/react-icon": "^0.1.4",
     "ajv": "^8.18.0",
+    "babel-plugin-react-compiler": "1.0.0",
     "chokidar": "^3.5.3",
     "classnames": "^2.3.2",
     "commander": "^12.1.0",
@@ -57,6 +58,7 @@
     "highlight.js": "^11.7.0",
     "inquirer": "^8.2.4",
     "lodash": "^4.17.21",
+    "react-compiler-runtime": "1.0.0",
     "sass": "^1.75.0"
   },
   "peerDependencies": {

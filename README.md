@@ -45,6 +45,19 @@ module.exports = {
 };
 ```
 
+远程组件项目可选开启 React Compiler（**默认关闭**）。编译器与 runtime 已内置在 `@kne/modules-dev` 的依赖里，业务项目**不需要安装任何额外包**，React 18 / 19 都适用，只需加一个字段：
+
+```js
+module.exports = {
+    plugins: [{
+        plugin: CracoRemoteComponentsPlugin,
+        options: {reactCompiler: true}
+    }]
+};
+```
+
+也可传对象覆盖编译器选项（如 `reactCompiler: {compilationMode: 'annotation'}`）。开启后会自动处理 Babel 插件顺序、构建缓存标识、自带 runtime 的解析路径与模块联邦单例。详细说明见 `doc/api.md` 的「reactCompiler」一节。
+
 ##### 组件库项目
 
 在示例目录的 `example/craco.config.js` 中配置 CracoLibsExamplePlugin：

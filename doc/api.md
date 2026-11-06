@@ -9,6 +9,50 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, env} = require('@kne
 | 属性名 | 说明 | 类型 | 默认值 |
 |-----|----|----|-----|
 | middleware | 中间件配置 | object | undefined |
+| reactCompiler | React Compiler 开关，默认关闭；业务项目零额外安装、React 18/19 自动适配 | boolean / object | false |
+
+### reactCompiler（仅 CracoRemoteComponentsPlugin）
+
+默认关闭，不配置时构建行为与旧版本完全一致。`babel-plugin-react-compiler@1.0.0` 与 `react-compiler-runtime@1.0.0` 已作为 `@kne/modules-dev` 的固定版本依赖内置，**业务项目不需要安装、升级或声明任何额外包**，也不需要区分自己用的是 React 18 还是 19。
+
+在 `craco.config.js` 里显式加一个字段即可开启：
+
+```js
+const {CracoRemoteComponentsPlugin} = require("@kne/modules-dev");
+
+module.exports = {
+    plugins: [{
+        plugin: CracoRemoteComponentsPlugin,
+        options: {reactCompiler: true}
+    }]
+};
+```
+
+也支持写在配置顶层（`module.exports = { reactCompiler: true, plugins: [...] }`），两种写法等价，插件 options 优先。
+
+##### React 18 / 19 的兼容方式
+
+编译器默认以 `target: '18'` 生成对 `react-compiler-runtime` 的引用，这份 runtime 由 modules-dev 提供，并通过追加 `resolve.modules` 让业务项目无需安装也能解析到（不用 `resolve.alias`，以保留产物里的原始包名给模块联邦做 shared 匹配）。它在 React 19 下会自动委托给 `React.__COMPILER_RUNTIME.c`（即 React 19 原生的 `useMemoCache`，与官方 `react/compiler-runtime` 等价），在 React 17/18 下回退到 `React.useMemo`，因此对宿主 React 主版本不敏感，很适合发 CDN 的 remote 产物。
+
+如果明确希望走 React 19 内置的 `react/compiler-runtime`（要求业务项目的 react 提供该子路径），可显式设置 `target: '19'`；缺失时会给出明确报错并提示去掉该配置。
+
+传对象可覆盖编译器选项，字段原样透传给 `babel-plugin-react-compiler`：
+
+| 属性名 | 说明 | 类型 | 默认值 |
+|-----|----|----|-----|
+| target | 最低 React 版本，取值 17 / 18 / 19；设为 19 时改用 react 内置 runtime | string | `18`（统一使用自带 runtime） |
+| compilationMode | 设为 `annotation` 时只编译带 `"use memo"` 的组件 | string | 编译器默认 |
+| panicThreshold | 违反 Rules of React 时的处理方式 | string | `none`（跳过问题组件，不阻断构建） |
+| plugin | 自定义编译器插件模块名或路径 | string | `babel-plugin-react-compiler`（内置） |
+| 其它 | 任意 React Compiler 配置，如 `sources`、`gating` | - | - |
+
+默认插件强制使用 modules-dev 内置的 1.0.0，业务项目里残留的旧版或 beta 编译器不会生效，保证各 remote 产物一致；只有显式设置 `plugin` 才改用业务项目自己提供的编译器（这种情况下才需要业务项目自行安装）。
+
+开启后 modules-dev 会做五件事：从自身依赖解析编译器插件并 unshift 到 app 源码 babel-loader 的 `plugins[0]`，保证早于 `react-refresh/babel` 与 JSX preset，且不影响处理 node_modules 的那条规则；按编译配置更新 `cacheIdentifier`，避免 `.cache` 复用未编译产物；把自带 runtime 所在的 `node_modules` 追加到 `resolve.modules` 末尾；把 `react-compiler-runtime`（或显式 target 19 时的 `react/compiler-runtime`）加入模块联邦 shared 单例；包装并保留业务方原有的 MF `middleware`。
+
+验证方式：React DevTools 里组件出现 `Memo ✨` 徽标；构建产物能搜到 `compiler-runtime`；首次开启若产物没变化，停服务清项目根 `.cache` 后重启（升级编译器插件后同样建议清一次）。按既有经验，宿主加载的 remote 需要用带此开关的 modules-dev 版本一起重建发版，再改宿主 `defaultVersion`；只升级宿主不会让旧 CDN 产物受益。
+
+关闭只需删掉 `reactCompiler` 或置为 `false`。组件库示例项目（CracoLibsExamplePlugin）暂不覆盖此开关。
 
 ### CracoLibsExamplePlugin
 

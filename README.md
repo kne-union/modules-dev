@@ -363,6 +363,10 @@ const {CracoRemoteComponentsPlugin, CracoLibsExamplePlugin, CracoIsolateCopiedWe
 
 用于远程组件项目的 Craco 插件，自动配置文档解析、模块联邦和 CSS Modules 支持。生产构建会关闭 webpack `concatenateModules`（scope hoisting），避免 Module Federation 与 ESM babel helpers / locale 拼进同一作用域时出现 `Cannot access ... before initialization`。开发态 `start` 不受影响。
 
+CSS Modules 类名从 2.4.21 起会对「内层 getLocalIdent（含 CRA 内部哈希）与追加的版本哈希」拼成的**完整最终类名**做安全编码：`+` 换成 `-`、`/` 换成 `_`、去掉 `=`。这是为了避免 `postcss-selector-parser@7.2.0` 对 css-loader 已转义的 `+` 等字符再次转义（例如 `k\+uRt` 变成 `k\\\+uRt`），导致 CSS 选择器与 JS 导出名不一致、样式失效。只改版本哈希不够，CRA 内部哈希里的 `+`（如 `k+uRt`）也必须处理。
+
+这会改变含上述字符的生成类名（如 `style_container__k+uRt__uQvZP` 变为 `style_container__k-uRt__uQvZP`），属于破坏性变更：升级本包后须**重新构建并用同一构建的 JS 与 CSS 成套发布**，不能与旧产物混用。导出 key（本地名，如 `container`、`is-mobile`）不变，本地名中已有的连字符也不会被改写。若本地名本身含 `+`、`/` 或 `=`（非标准写法），会被同样替换，可能与原本就带 `-`/`_` 的本地名在类名上接近，实际项目中此类本地名很少见。
+
 | 属性名 | 说明 | 类型 | 默认值 |
 |-----|----|----|-----|
 | middleware | 中间件配置 | object | undefined |

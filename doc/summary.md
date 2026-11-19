@@ -8,6 +8,7 @@ modules-dev 是一个强大的组件开发辅助工具，为你的远程组件�
 - **命令行工具**：提供 `modules-dev-create` 和 `modules-dev-libs-init` 快速创建组件目录结构
 - **模块联邦支持**：内置 Webpack Module Federation 支持，方便远程组件开发
 - **灵活的路径配置**：通过环境变量自定义组件目录和别名
+- **开发服务发现远程组件**：`CracoRemoteComponentsPlugin` 让本地 `craco start` 提供 `GET /remote-module-config.json`（`{ name, url, tpl, version }`，与 `@kne/npm-tools entryHtml` 的构建产物同构，`url` 取当前请求的 origin 加 `MODULES_DEV_PUBLIC_URL`），宿主（如应用中心关联应用）本地联调无需先构建
 
 ### 应用场景
 
